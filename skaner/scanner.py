@@ -1,4 +1,4 @@
-from token import *
+from skaner.token import *
 
 
 class Scanner:

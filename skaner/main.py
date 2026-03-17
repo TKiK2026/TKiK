@@ -1,5 +1,5 @@
 from scanner import Scanner
-from token import *
+from skaner.token import *
 
 
 def main():
