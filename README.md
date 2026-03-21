@@ -1,7 +1,7 @@
 # Skaner
 **Język implementacji**: Python
 
-**Spis tokenów:**
+**Spis tokenów dla skanera wyrażeń matematycznych:**
 
 |       Nazwa      |      Kod     |
 |:----------------:|:------------:|
@@ -15,3 +15,18 @@
 |   Prawy nawias   |   `RPAREN`   |
 |   Koniec pliku   |     `EOF`    |
 |       Błąd       |    `ERROR`   |
+
+**Spis tokenów dla kolorowania składni:**
+
+|       Nazwa       |     Kod      |
+|:-----------------:|:------------:|
+| Słowo zastrzeżone |  `KEYWORD`   |
+|   Identyfikator   | `IDENTIFIER` |
+|      Liczba       |   `NUMBER`   |
+|  Wartość string   |   `STRING`    |
+|     Komentarz     |    `COMMENT`     |
+|     Opeartor      |    `OPERATOR`     |
+|      Symbol       |   `SYMBOL`   |
+|    Białe znaki    |   `WHITESPACE`   |
+|   Koniec pliku    |    `EOF`     |
+|       Błąd        |   `ERROR`    |
