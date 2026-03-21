@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body style="background:#1e1e1e;">
+<pre><code style="font-family:Consolas,monospace;"><span style="color:#D4D4D4;">#</span><span style="color:#569CD6;">include</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">bits</span><span style="color:#D4D4D4;">/</span><span style="color:#9CDCFE;">stdc</span><span style="color:#D4D4D4;">++</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">h</span><span style="color:#D4D4D4;">&gt;</span>
+<span style="color:#D4D4D4;">#</span><span style="color:#569CD6;">include</span> <span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">cstring</span><span style="color:#D4D4D4;">&gt;</span>
+<span style="color:#D4D4D4;">#</span><span style="color:#569CD6;">include</span> <span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">iostream</span><span style="color:#D4D4D4;">&gt;</span>
+<span style="color:#569CD6;">using</span> <span style="color:#569CD6;">namespace</span> <span style="color:#9CDCFE;">std</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#569CD6;">class</span> <span style="color:#9CDCFE;">TextListElement</span>
+<span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">friend</span> <span style="color:#569CD6;">class</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#6A9955;">/*
+     * Tworzy kopię tekstu txt alokując pamięć na stercie
+     * za pomocą operatora new
+     */</span>
+    <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">txt</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#6A9955;">/*
+     * Zwalnia pamięć elementu i jego danych!
+     */</span>
+    <span style="color:#D4D4D4;">~</span><span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">next</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">prev</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span><span style="color:#D4D4D4;">;</span>
+
+<span style="color:#6A9955;">// Deklaracja listy</span>
+
+
+<span style="color:#569CD6;">class</span> <span style="color:#9CDCFE;">TextList</span>
+<span style="color:#D4D4D4;">{</span>
+    <span style="color:#6A9955;">/* wskaźnik na pierwszy element */</span>
+    <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#6A9955;">/* wskaźnik na ostatni element */</span>
+    <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#569CD6;">public</span><span style="color:#D4D4D4;">:</span>
+    <span style="color:#6A9955;">/* konstruktor*/</span>
+    <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#6A9955;">/* destruktor */</span>
+    <span style="color:#D4D4D4;">~</span><span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Dodaje tekst na początku listy
+     */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">v</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Dodaje tekst na końcu listy
+     */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">pushBack</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">v</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Zwraca wskaźnik do tekstu przechowywanego w pierwszym elemencie
+     */</span>
+    <span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">getFront</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Zwraca wskaźnik do tekstu przechowywanego w ostatnim elemencie
+     */</span>
+    <span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">getBack</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Usuwa pierwszy element
+     */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">deleteFront</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Usuwa ostatni element
+     */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">deleteBack</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Drukuje zawartość listy (w przód).
+     * Oddziela elementy listy łańcuchem sep, kończy wydruk listy wypisując endWith
+     */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">sep</span><span style="color:#D4D4D4;">=</span><span style="color:#CE9178;">&quot; &quot;</span><span style="color:#D4D4D4;">,</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">endWith</span><span style="color:#D4D4D4;">=</span><span style="color:#CE9178;">&quot;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Drukuje zawartość listy (w tył)
+     * Oddziela elementy listy łańcuchem sep, kończy wydruk listy wypisując endWith
+     */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">rdump</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">sep</span><span style="color:#D4D4D4;">=</span><span style="color:#CE9178;">&quot; &quot;</span><span style="color:#D4D4D4;">,</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">endWith</span><span style="color:#D4D4D4;">=</span><span style="color:#CE9178;">&quot;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Konstruktor kopiujący
+     */</span>
+    <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#6A9955;">/*
+     * Operator przypisania
+     */</span>
+    <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">operator</span><span style="color:#D4D4D4;">=</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/*
+     * Czy lista jest pusta
+     */</span>
+    <span style="color:#569CD6;">bool</span> <span style="color:#9CDCFE;">isEmpty</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">{</span><span style="color:#569CD6;">return</span> <span style="color:#D4D4D4;">!</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">;</span><span style="color:#D4D4D4;">}</span>
+<span style="color:#569CD6;">protected</span><span style="color:#D4D4D4;">:</span>
+    <span style="color:#6A9955;">/* funkcja do wykorzystania, zwalania pamięć listy */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">free</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#6A9955;">/* funkcja do wykorzystania,
+     * zakłada, że lista jest pusta
+     * ale zeruje wskaźniki start i end - bo będzie użyta w konstruktorze kopującym
+     * i kopiuje do niej zawartość listy other
+     */</span>
+    <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">copy</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span><span style="color:#D4D4D4;">;</span>
+
+<span style="color:#6A9955;">// Implementacja elementu listy</span>
+
+<span style="color:#6A9955;">///////////////////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span style="color:#6A9955;">// class TextListElement</span>
+
+
+<span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">txt</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">if</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">txt</span><span style="color:#D4D4D4;">)</span>
+    <span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">value</span> <span style="color:#D4D4D4;">=</span> <span style="color:#569CD6;">new</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">[</span><span style="color:#9CDCFE;">strlen</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">txt</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">+</span><span style="color:#B5CEA8;">1</span><span style="color:#D4D4D4;">]</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">strcpy</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">,</span><span style="color:#9CDCFE;">txt</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">::</span><span style="color:#D4D4D4;">~</span><span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span> <span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">delete</span> <span style="color:#D4D4D4;">[</span><span style="color:#D4D4D4;">]</span><span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#6A9955;">// Implementacja metod listy</span>
+
+
+
+<span style="color:#6A9955;">///////////////////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span style="color:#6A9955;">// class TextList</span>
+
+<span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">=</span><span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+<span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#D4D4D4;">~</span><span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">free</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">v</span><span style="color:#D4D4D4;">)</span>
+<span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">TextListElement</span> <span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">tmp</span> <span style="color:#D4D4D4;">=</span> <span style="color:#569CD6;">new</span> <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">v</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">if</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">)</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">prev</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">prev</span> <span style="color:#D4D4D4;">=</span> <span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">next</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">start</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">if</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">==</span><span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">)</span>
+        <span style="color:#9CDCFE;">end</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">pushBack</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">v</span><span style="color:#D4D4D4;">)</span>
+<span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">TextListElement</span> <span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">tmp</span> <span style="color:#D4D4D4;">=</span> <span style="color:#569CD6;">new</span> <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">v</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">if</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">)</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">next</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">prev</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">next</span> <span style="color:#D4D4D4;">=</span> <span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">end</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">if</span> <span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">==</span><span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">)</span>
+        <span style="color:#9CDCFE;">start</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">getFront</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">return</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">;</span>
+
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">getBack</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">return</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">deleteFront</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">if</span> <span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">)</span> <span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">tmp</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">start</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">next</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#569CD6;">if</span> <span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">)</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">prev</span> <span style="color:#D4D4D4;">=</span> <span style="color:#569CD6;">nullptr</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#569CD6;">else</span> <span style="color:#9CDCFE;">end</span> <span style="color:#D4D4D4;">=</span> <span style="color:#569CD6;">nullptr</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#569CD6;">delete</span> <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#6A9955;">/*
+ * Usuwa ostatni element
+ */</span>
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">deleteBack</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">if</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">)</span>
+    <span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">tmp</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">end</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">prev</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#569CD6;">if</span> <span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">)</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">next</span> <span style="color:#D4D4D4;">=</span> <span style="color:#569CD6;">nullptr</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#569CD6;">else</span> <span style="color:#9CDCFE;">start</span> <span style="color:#D4D4D4;">=</span> <span style="color:#569CD6;">nullptr</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#569CD6;">delete</span> <span style="color:#9CDCFE;">tmp</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#6A9955;">/*
+ * Drukuje zawartość listy (w przód)
+ */</span>
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">sep</span><span style="color:#D4D4D4;">,</span> <span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">endWith</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">TextListElement</span> <span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">el</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">while</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">el</span><span style="color:#D4D4D4;">!=</span><span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">)</span>
+    <span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">cout</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">el</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">sep</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">el</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">el</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">next</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+    <span style="color:#9CDCFE;">cout</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">endWith</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#6A9955;">/*
+ * Drukuje zawartość listy (od tyłu do przodu)
+ */</span>
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">rdump</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">sep</span><span style="color:#D4D4D4;">,</span> <span style="color:#569CD6;">const</span> <span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">endWith</span><span style="color:#D4D4D4;">)</span><span style="color:#569CD6;">const</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">TextListElement</span> <span style="color:#D4D4D4;">*</span> <span style="color:#9CDCFE;">el</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">end</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">while</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">el</span><span style="color:#D4D4D4;">!=</span><span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">)</span>
+    <span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">cout</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">el</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">sep</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">el</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">el</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">prev</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+    <span style="color:#9CDCFE;">cout</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">endWith</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#6A9955;">////////////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">free</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#6A9955;">// jedna linijka</span>
+    <span style="color:#569CD6;">while</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">)</span> <span style="color:#9CDCFE;">deleteFront</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">copy</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#6A9955;">// 4 linijki, pamiętaj w konstruktorze kopiującym kopiujesz dane do niezainicjowanego obiektu</span>
+    <span style="color:#9CDCFE;">start</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">end</span> <span style="color:#D4D4D4;">=</span> <span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">for</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">TextListElement</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">i</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">start</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">i</span><span style="color:#D4D4D4;">!=</span><span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">i</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">i</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">next</span><span style="color:#D4D4D4;">)</span>
+        <span style="color:#9CDCFE;">pushBack</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">i</span><span style="color:#D4D4D4;">-&gt;</span><span style="color:#9CDCFE;">value</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">copy</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">operator</span><span style="color:#D4D4D4;">=</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">const</span> <span style="color:#9CDCFE;">TextList</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">if</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">&amp;</span><span style="color:#9CDCFE;">other</span> <span style="color:#D4D4D4;">!=</span> <span style="color:#9CDCFE;">this</span><span style="color:#D4D4D4;">)</span>
+    <span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">free</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">copy</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">other</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#D4D4D4;">}</span>
+    <span style="color:#569CD6;">return</span> <span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">this</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#6A9955;">// Testy</span>
+<span style="color:#569CD6;">static</span> <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">test_push_delete</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">char</span> <span style="color:#9CDCFE;">buf</span><span style="color:#D4D4D4;">[</span><span style="color:#D4D4D4;">]</span><span style="color:#D4D4D4;">=</span><span style="color:#CE9178;">&quot;aa bb cc dd ee ff gg hh ii jj kk ll&quot;</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">TextList</span> <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">for</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">strtok</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">buf</span><span style="color:#D4D4D4;">,</span><span style="color:#CE9178;">&quot; ,.;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">strtok</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">NULL</span><span style="color:#D4D4D4;">,</span><span style="color:#CE9178;">&quot; ,.;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushBack</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+    <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">bool</span> <span style="color:#9CDCFE;">flag</span><span style="color:#D4D4D4;">=</span><span style="color:#569CD6;">true</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">while</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">!</span><span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">isEmpty</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+        <span style="color:#569CD6;">if</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">flag</span><span style="color:#D4D4D4;">)</span><span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">deleteFront</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#569CD6;">else</span> <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">deleteBack</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">flag</span><span style="color:#D4D4D4;">=</span><span style="color:#D4D4D4;">!</span><span style="color:#9CDCFE;">flag</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#569CD6;">static</span> <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">kochanowski</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">char</span> <span style="color:#9CDCFE;">buf</span><span style="color:#D4D4D4;">[</span><span style="color:#D4D4D4;">]</span><span style="color:#D4D4D4;">=</span><span style="color:#CE9178;">&quot;Folgujmy paniom nie sobie, ma rada;\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Miłujmy wiernie nie jest w nich przysada.\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Godności trzeba nie za nic tu cnota,\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Miłości pragną nie pragną tu złota.\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Miłują z serca nie patrzają zdrady,\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Pilnują prawdy nie kłamają rady.\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Wiarę uprzejmą nie dar sobie ważą,\n&quot;</span>
+               <span style="color:#CE9178;">&quot;W miarę nie nazbyt ciągnąć rzemień każą.\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Wiecznie wam służę nie służę na chwilę,\n&quot;</span>
+               <span style="color:#CE9178;">&quot;Bezpiecznie wierzcie nierad ja omylę.&quot;</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">TextList</span> <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">for</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">strtok</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">buf</span><span style="color:#D4D4D4;">,</span><span style="color:#CE9178;">&quot; ,.;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">strtok</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">NULL</span><span style="color:#D4D4D4;">,</span><span style="color:#CE9178;">&quot; ,.;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushBack</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+    <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">std</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">cout</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#CE9178;">&quot;-----------------------------------&quot;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">std</span><span style="color:#D4D4D4;">::</span><span style="color:#9CDCFE;">endl</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">rdump</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+<span style="color:#D4D4D4;">}</span>
+
+
+<span style="color:#569CD6;">static</span> <span style="color:#569CD6;">void</span> <span style="color:#9CDCFE;">test_copy_assignment</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+    <span style="color:#569CD6;">char</span> <span style="color:#9CDCFE;">buf</span><span style="color:#D4D4D4;">[</span><span style="color:#D4D4D4;">]</span><span style="color:#D4D4D4;">=</span><span style="color:#CE9178;">&quot;aa bb cc dd ee ff gg hh ii jj kk ll&quot;</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">TextList</span> <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">for</span><span style="color:#D4D4D4;">(</span><span style="color:#569CD6;">char</span><span style="color:#D4D4D4;">*</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">strtok</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">buf</span><span style="color:#D4D4D4;">,</span><span style="color:#CE9178;">&quot; ,.;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">;</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">strtok</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">NULL</span><span style="color:#D4D4D4;">,</span><span style="color:#CE9178;">&quot; ,.;\n&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">{</span>
+        <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushBack</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+        <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#9CDCFE;">ptr</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#D4D4D4;">}</span>
+    <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">TextList</span> <span style="color:#9CDCFE;">list2</span><span style="color:#D4D4D4;">=</span><span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">list2</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+    <span style="color:#9CDCFE;">list2</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#CE9178;">&quot;11&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">list2</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#CE9178;">&quot;22&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">list2</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#CE9178;">&quot;33&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">list2</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">pushFront</span><span style="color:#D4D4D4;">(</span><span style="color:#CE9178;">&quot;44&quot;</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">list</span> <span style="color:#D4D4D4;">=</span> <span style="color:#9CDCFE;">list2</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">list</span><span style="color:#D4D4D4;">.</span><span style="color:#9CDCFE;">dump</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+
+<span style="color:#D4D4D4;">}</span>
+
+<span style="color:#569CD6;">int</span> <span style="color:#9CDCFE;">main</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span>
+<span style="color:#D4D4D4;">{</span>
+    <span style="color:#9CDCFE;">test_push_delete</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">kochanowski</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">cout</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#D4D4D4;">&lt;</span><span style="color:#9CDCFE;">endl</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#9CDCFE;">test_copy_assignment</span><span style="color:#D4D4D4;">(</span><span style="color:#D4D4D4;">)</span><span style="color:#D4D4D4;">;</span>
+    <span style="color:#569CD6;">return</span> <span style="color:#B5CEA8;">0</span><span style="color:#D4D4D4;">;</span>
+
+<span style="color:#D4D4D4;">}</span></code></pre>
+</body>
+</html>

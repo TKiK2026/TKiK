@@ -1,5 +1,5 @@
-from scanner import Scanner
-from skaner.token import *
+from skaner_wyrazenie_matematyczne.scanner import Scanner
+from skaner_wyrazenie_matematyczne.token import *
 
 
 def main():

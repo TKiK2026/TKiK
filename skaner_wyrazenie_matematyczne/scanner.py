@@ -1,4 +1,4 @@
-from skaner.token import *
+from skaner_wyrazenie_matematyczne.token import *
 
 
 class Scanner:
