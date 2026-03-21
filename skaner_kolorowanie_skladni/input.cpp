@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 using namespace std;
+$$
 class TextListElement
 {
     friend class TextList;
@@ -128,7 +129,7 @@ TextListElement::~TextListElement() {
 // class TextList
 
 TextList::TextList(){
-    start=end=0;
+    start=end=0.0;
 }
 TextList::~TextList(){
     free();

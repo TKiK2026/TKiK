@@ -10,6 +10,7 @@ COLOR_MAP = {
     TokenType.COMMENT:    "#6A9955",
     TokenType.OPERATOR:   "#D4D4D4",
     TokenType.SYMBOL:     "#D4D4D4",
+    TokenType.ERROR:      "#F71505"
 }
 
 
