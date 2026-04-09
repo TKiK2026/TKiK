@@ -1,0 +1,1891 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> statements END_PROG
+Rule 2     statements -> statements statement
+Rule 3     statements -> statement
+Rule 4     statement -> ID IS expression
+Rule 5     statement -> ID ARE expression
+Rule 6     statement -> MAKE ID expression
+Rule 7     statement -> PRINT expression
+Rule 8     statement -> IF expression COLON statements EXCLAIM
+Rule 9     statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+Rule 10    statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+Rule 11    statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+Rule 12    statement -> AS_LONG_AS expression COLON statements EXCLAIM
+Rule 13    expression -> expression PLUS expression
+Rule 14    expression -> expression MINUS expression
+Rule 15    expression -> expression TIMES expression
+Rule 16    expression -> expression OVER expression
+Rule 17    expression -> expression LT expression
+Rule 18    expression -> expression GT expression
+Rule 19    expression -> expression IS expression QUESTION
+Rule 20    expression -> expression ARE expression QUESTION
+Rule 21    expression -> expression AND expression
+Rule 22    expression -> expression OR expression
+Rule 23    expression -> NOT expression
+Rule 24    expression -> NUMBER
+Rule 25    expression -> ID
+Rule 26    expression -> STRING
+Rule 27    expression -> TRUE
+Rule 28    expression -> FALSE
+
+Terminals, with rules where they appear
+
+AND                  : 21
+ARE                  : 5 20
+AS_LONG_AS           : 12
+COLON                : 8 9 9 10 10 11 11 11 12
+ELSE                 : 9 11
+ELSE_IF              : 10 11
+END_PROG             : 1
+EXCLAIM              : 8 9 9 10 10 11 11 11 12
+FALSE                : 28
+GT                   : 18
+ID                   : 4 5 6 25
+IF                   : 8 9 10 11
+IS                   : 4 19
+LT                   : 17
+MAKE                 : 6
+MINUS                : 14
+NOT                  : 23
+NUMBER               : 24
+OR                   : 22
+OVER                 : 16
+PLUS                 : 13
+PRINT                : 7
+QUESTION             : 19 20
+STRING               : 26
+TIMES                : 15
+TRUE                 : 27
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 4 5 6 7 8 9 10 10 11 11 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23
+program              : 0
+statement            : 2 3
+statements           : 1 2 8 9 9 10 10 11 11 11 12
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . statements END_PROG
+    (2) statements -> . statements statement
+    (3) statements -> . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    program                        shift and go to state 1
+    statements                     shift and go to state 2
+    statement                      shift and go to state 3
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> statements . END_PROG
+    (2) statements -> statements . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    END_PROG        shift and go to state 9
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statement                      shift and go to state 10
+
+state 3
+
+    (3) statements -> statement .
+
+    END_PROG        reduce using rule 3 (statements -> statement .)
+    ID              reduce using rule 3 (statements -> statement .)
+    MAKE            reduce using rule 3 (statements -> statement .)
+    PRINT           reduce using rule 3 (statements -> statement .)
+    IF              reduce using rule 3 (statements -> statement .)
+    AS_LONG_AS      reduce using rule 3 (statements -> statement .)
+    EXCLAIM         reduce using rule 3 (statements -> statement .)
+
+
+state 4
+
+    (4) statement -> ID . IS expression
+    (5) statement -> ID . ARE expression
+
+    IS              shift and go to state 11
+    ARE             shift and go to state 12
+
+
+state 5
+
+    (6) statement -> MAKE . ID expression
+
+    ID              shift and go to state 13
+
+
+state 6
+
+    (7) statement -> PRINT . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 14
+
+state 7
+
+    (8) statement -> IF . expression COLON statements EXCLAIM
+    (9) statement -> IF . expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> IF . expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> IF . expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 21
+
+state 8
+
+    (12) statement -> AS_LONG_AS . expression COLON statements EXCLAIM
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 22
+
+state 9
+
+    (1) program -> statements END_PROG .
+
+    $end            reduce using rule 1 (program -> statements END_PROG .)
+
+
+state 10
+
+    (2) statements -> statements statement .
+
+    END_PROG        reduce using rule 2 (statements -> statements statement .)
+    ID              reduce using rule 2 (statements -> statements statement .)
+    MAKE            reduce using rule 2 (statements -> statements statement .)
+    PRINT           reduce using rule 2 (statements -> statements statement .)
+    IF              reduce using rule 2 (statements -> statements statement .)
+    AS_LONG_AS      reduce using rule 2 (statements -> statements statement .)
+    EXCLAIM         reduce using rule 2 (statements -> statements statement .)
+
+
+state 11
+
+    (4) statement -> ID IS . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 23
+
+state 12
+
+    (5) statement -> ID ARE . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 24
+
+state 13
+
+    (6) statement -> MAKE ID . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 25
+
+state 14
+
+    (7) statement -> PRINT expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    END_PROG        reduce using rule 7 (statement -> PRINT expression .)
+    ID              reduce using rule 7 (statement -> PRINT expression .)
+    MAKE            reduce using rule 7 (statement -> PRINT expression .)
+    PRINT           reduce using rule 7 (statement -> PRINT expression .)
+    IF              reduce using rule 7 (statement -> PRINT expression .)
+    AS_LONG_AS      reduce using rule 7 (statement -> PRINT expression .)
+    EXCLAIM         reduce using rule 7 (statement -> PRINT expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 15
+
+    (23) expression -> NOT . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 36
+
+state 16
+
+    (24) expression -> NUMBER .
+
+    PLUS            reduce using rule 24 (expression -> NUMBER .)
+    MINUS           reduce using rule 24 (expression -> NUMBER .)
+    TIMES           reduce using rule 24 (expression -> NUMBER .)
+    OVER            reduce using rule 24 (expression -> NUMBER .)
+    LT              reduce using rule 24 (expression -> NUMBER .)
+    GT              reduce using rule 24 (expression -> NUMBER .)
+    IS              reduce using rule 24 (expression -> NUMBER .)
+    ARE             reduce using rule 24 (expression -> NUMBER .)
+    AND             reduce using rule 24 (expression -> NUMBER .)
+    OR              reduce using rule 24 (expression -> NUMBER .)
+    END_PROG        reduce using rule 24 (expression -> NUMBER .)
+    ID              reduce using rule 24 (expression -> NUMBER .)
+    MAKE            reduce using rule 24 (expression -> NUMBER .)
+    PRINT           reduce using rule 24 (expression -> NUMBER .)
+    IF              reduce using rule 24 (expression -> NUMBER .)
+    AS_LONG_AS      reduce using rule 24 (expression -> NUMBER .)
+    EXCLAIM         reduce using rule 24 (expression -> NUMBER .)
+    COLON           reduce using rule 24 (expression -> NUMBER .)
+    QUESTION        reduce using rule 24 (expression -> NUMBER .)
+
+
+state 17
+
+    (25) expression -> ID .
+
+    PLUS            reduce using rule 25 (expression -> ID .)
+    MINUS           reduce using rule 25 (expression -> ID .)
+    TIMES           reduce using rule 25 (expression -> ID .)
+    OVER            reduce using rule 25 (expression -> ID .)
+    LT              reduce using rule 25 (expression -> ID .)
+    GT              reduce using rule 25 (expression -> ID .)
+    IS              reduce using rule 25 (expression -> ID .)
+    ARE             reduce using rule 25 (expression -> ID .)
+    AND             reduce using rule 25 (expression -> ID .)
+    OR              reduce using rule 25 (expression -> ID .)
+    END_PROG        reduce using rule 25 (expression -> ID .)
+    ID              reduce using rule 25 (expression -> ID .)
+    MAKE            reduce using rule 25 (expression -> ID .)
+    PRINT           reduce using rule 25 (expression -> ID .)
+    IF              reduce using rule 25 (expression -> ID .)
+    AS_LONG_AS      reduce using rule 25 (expression -> ID .)
+    EXCLAIM         reduce using rule 25 (expression -> ID .)
+    COLON           reduce using rule 25 (expression -> ID .)
+    QUESTION        reduce using rule 25 (expression -> ID .)
+
+
+state 18
+
+    (26) expression -> STRING .
+
+    PLUS            reduce using rule 26 (expression -> STRING .)
+    MINUS           reduce using rule 26 (expression -> STRING .)
+    TIMES           reduce using rule 26 (expression -> STRING .)
+    OVER            reduce using rule 26 (expression -> STRING .)
+    LT              reduce using rule 26 (expression -> STRING .)
+    GT              reduce using rule 26 (expression -> STRING .)
+    IS              reduce using rule 26 (expression -> STRING .)
+    ARE             reduce using rule 26 (expression -> STRING .)
+    AND             reduce using rule 26 (expression -> STRING .)
+    OR              reduce using rule 26 (expression -> STRING .)
+    END_PROG        reduce using rule 26 (expression -> STRING .)
+    ID              reduce using rule 26 (expression -> STRING .)
+    MAKE            reduce using rule 26 (expression -> STRING .)
+    PRINT           reduce using rule 26 (expression -> STRING .)
+    IF              reduce using rule 26 (expression -> STRING .)
+    AS_LONG_AS      reduce using rule 26 (expression -> STRING .)
+    EXCLAIM         reduce using rule 26 (expression -> STRING .)
+    COLON           reduce using rule 26 (expression -> STRING .)
+    QUESTION        reduce using rule 26 (expression -> STRING .)
+
+
+state 19
+
+    (27) expression -> TRUE .
+
+    PLUS            reduce using rule 27 (expression -> TRUE .)
+    MINUS           reduce using rule 27 (expression -> TRUE .)
+    TIMES           reduce using rule 27 (expression -> TRUE .)
+    OVER            reduce using rule 27 (expression -> TRUE .)
+    LT              reduce using rule 27 (expression -> TRUE .)
+    GT              reduce using rule 27 (expression -> TRUE .)
+    IS              reduce using rule 27 (expression -> TRUE .)
+    ARE             reduce using rule 27 (expression -> TRUE .)
+    AND             reduce using rule 27 (expression -> TRUE .)
+    OR              reduce using rule 27 (expression -> TRUE .)
+    END_PROG        reduce using rule 27 (expression -> TRUE .)
+    ID              reduce using rule 27 (expression -> TRUE .)
+    MAKE            reduce using rule 27 (expression -> TRUE .)
+    PRINT           reduce using rule 27 (expression -> TRUE .)
+    IF              reduce using rule 27 (expression -> TRUE .)
+    AS_LONG_AS      reduce using rule 27 (expression -> TRUE .)
+    EXCLAIM         reduce using rule 27 (expression -> TRUE .)
+    COLON           reduce using rule 27 (expression -> TRUE .)
+    QUESTION        reduce using rule 27 (expression -> TRUE .)
+
+
+state 20
+
+    (28) expression -> FALSE .
+
+    PLUS            reduce using rule 28 (expression -> FALSE .)
+    MINUS           reduce using rule 28 (expression -> FALSE .)
+    TIMES           reduce using rule 28 (expression -> FALSE .)
+    OVER            reduce using rule 28 (expression -> FALSE .)
+    LT              reduce using rule 28 (expression -> FALSE .)
+    GT              reduce using rule 28 (expression -> FALSE .)
+    IS              reduce using rule 28 (expression -> FALSE .)
+    ARE             reduce using rule 28 (expression -> FALSE .)
+    AND             reduce using rule 28 (expression -> FALSE .)
+    OR              reduce using rule 28 (expression -> FALSE .)
+    END_PROG        reduce using rule 28 (expression -> FALSE .)
+    ID              reduce using rule 28 (expression -> FALSE .)
+    MAKE            reduce using rule 28 (expression -> FALSE .)
+    PRINT           reduce using rule 28 (expression -> FALSE .)
+    IF              reduce using rule 28 (expression -> FALSE .)
+    AS_LONG_AS      reduce using rule 28 (expression -> FALSE .)
+    EXCLAIM         reduce using rule 28 (expression -> FALSE .)
+    COLON           reduce using rule 28 (expression -> FALSE .)
+    QUESTION        reduce using rule 28 (expression -> FALSE .)
+
+
+state 21
+
+    (8) statement -> IF expression . COLON statements EXCLAIM
+    (9) statement -> IF expression . COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> IF expression . COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> IF expression . COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    COLON           shift and go to state 37
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 22
+
+    (12) statement -> AS_LONG_AS expression . COLON statements EXCLAIM
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    COLON           shift and go to state 38
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 23
+
+    (4) statement -> ID IS expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    END_PROG        reduce using rule 4 (statement -> ID IS expression .)
+    ID              reduce using rule 4 (statement -> ID IS expression .)
+    MAKE            reduce using rule 4 (statement -> ID IS expression .)
+    PRINT           reduce using rule 4 (statement -> ID IS expression .)
+    IF              reduce using rule 4 (statement -> ID IS expression .)
+    AS_LONG_AS      reduce using rule 4 (statement -> ID IS expression .)
+    EXCLAIM         reduce using rule 4 (statement -> ID IS expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 24
+
+    (5) statement -> ID ARE expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    END_PROG        reduce using rule 5 (statement -> ID ARE expression .)
+    ID              reduce using rule 5 (statement -> ID ARE expression .)
+    MAKE            reduce using rule 5 (statement -> ID ARE expression .)
+    PRINT           reduce using rule 5 (statement -> ID ARE expression .)
+    IF              reduce using rule 5 (statement -> ID ARE expression .)
+    AS_LONG_AS      reduce using rule 5 (statement -> ID ARE expression .)
+    EXCLAIM         reduce using rule 5 (statement -> ID ARE expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 25
+
+    (6) statement -> MAKE ID expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    END_PROG        reduce using rule 6 (statement -> MAKE ID expression .)
+    ID              reduce using rule 6 (statement -> MAKE ID expression .)
+    MAKE            reduce using rule 6 (statement -> MAKE ID expression .)
+    PRINT           reduce using rule 6 (statement -> MAKE ID expression .)
+    IF              reduce using rule 6 (statement -> MAKE ID expression .)
+    AS_LONG_AS      reduce using rule 6 (statement -> MAKE ID expression .)
+    EXCLAIM         reduce using rule 6 (statement -> MAKE ID expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 26
+
+    (13) expression -> expression PLUS . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 39
+
+state 27
+
+    (14) expression -> expression MINUS . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 40
+
+state 28
+
+    (15) expression -> expression TIMES . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 41
+
+state 29
+
+    (16) expression -> expression OVER . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 42
+
+state 30
+
+    (17) expression -> expression LT . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 43
+
+state 31
+
+    (18) expression -> expression GT . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 44
+
+state 32
+
+    (19) expression -> expression IS . expression QUESTION
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 45
+
+state 33
+
+    (20) expression -> expression ARE . expression QUESTION
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 46
+
+state 34
+
+    (21) expression -> expression AND . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 47
+
+state 35
+
+    (22) expression -> expression OR . expression
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 48
+
+state 36
+
+    (23) expression -> NOT expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    IS              reduce using rule 23 (expression -> NOT expression .)
+    ARE             reduce using rule 23 (expression -> NOT expression .)
+    AND             reduce using rule 23 (expression -> NOT expression .)
+    OR              reduce using rule 23 (expression -> NOT expression .)
+    END_PROG        reduce using rule 23 (expression -> NOT expression .)
+    ID              reduce using rule 23 (expression -> NOT expression .)
+    MAKE            reduce using rule 23 (expression -> NOT expression .)
+    PRINT           reduce using rule 23 (expression -> NOT expression .)
+    IF              reduce using rule 23 (expression -> NOT expression .)
+    AS_LONG_AS      reduce using rule 23 (expression -> NOT expression .)
+    EXCLAIM         reduce using rule 23 (expression -> NOT expression .)
+    COLON           reduce using rule 23 (expression -> NOT expression .)
+    QUESTION        reduce using rule 23 (expression -> NOT expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+
+  ! PLUS            [ reduce using rule 23 (expression -> NOT expression .) ]
+  ! MINUS           [ reduce using rule 23 (expression -> NOT expression .) ]
+  ! TIMES           [ reduce using rule 23 (expression -> NOT expression .) ]
+  ! OVER            [ reduce using rule 23 (expression -> NOT expression .) ]
+  ! LT              [ reduce using rule 23 (expression -> NOT expression .) ]
+  ! GT              [ reduce using rule 23 (expression -> NOT expression .) ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 37
+
+    (8) statement -> IF expression COLON . statements EXCLAIM
+    (9) statement -> IF expression COLON . statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> IF expression COLON . statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> IF expression COLON . statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (2) statements -> . statements statement
+    (3) statements -> . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statements                     shift and go to state 49
+    statement                      shift and go to state 3
+
+state 38
+
+    (12) statement -> AS_LONG_AS expression COLON . statements EXCLAIM
+    (2) statements -> . statements statement
+    (3) statements -> . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statements                     shift and go to state 50
+    statement                      shift and go to state 3
+
+state 39
+
+    (13) expression -> expression PLUS expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    PLUS            reduce using rule 13 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 13 (expression -> expression PLUS expression .)
+    LT              reduce using rule 13 (expression -> expression PLUS expression .)
+    GT              reduce using rule 13 (expression -> expression PLUS expression .)
+    IS              reduce using rule 13 (expression -> expression PLUS expression .)
+    ARE             reduce using rule 13 (expression -> expression PLUS expression .)
+    AND             reduce using rule 13 (expression -> expression PLUS expression .)
+    OR              reduce using rule 13 (expression -> expression PLUS expression .)
+    END_PROG        reduce using rule 13 (expression -> expression PLUS expression .)
+    ID              reduce using rule 13 (expression -> expression PLUS expression .)
+    MAKE            reduce using rule 13 (expression -> expression PLUS expression .)
+    PRINT           reduce using rule 13 (expression -> expression PLUS expression .)
+    IF              reduce using rule 13 (expression -> expression PLUS expression .)
+    AS_LONG_AS      reduce using rule 13 (expression -> expression PLUS expression .)
+    EXCLAIM         reduce using rule 13 (expression -> expression PLUS expression .)
+    COLON           reduce using rule 13 (expression -> expression PLUS expression .)
+    QUESTION        reduce using rule 13 (expression -> expression PLUS expression .)
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+
+  ! TIMES           [ reduce using rule 13 (expression -> expression PLUS expression .) ]
+  ! OVER            [ reduce using rule 13 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 26 ]
+  ! MINUS           [ shift and go to state 27 ]
+  ! LT              [ shift and go to state 30 ]
+  ! GT              [ shift and go to state 31 ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 40
+
+    (14) expression -> expression MINUS expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    PLUS            reduce using rule 14 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 14 (expression -> expression MINUS expression .)
+    LT              reduce using rule 14 (expression -> expression MINUS expression .)
+    GT              reduce using rule 14 (expression -> expression MINUS expression .)
+    IS              reduce using rule 14 (expression -> expression MINUS expression .)
+    ARE             reduce using rule 14 (expression -> expression MINUS expression .)
+    AND             reduce using rule 14 (expression -> expression MINUS expression .)
+    OR              reduce using rule 14 (expression -> expression MINUS expression .)
+    END_PROG        reduce using rule 14 (expression -> expression MINUS expression .)
+    ID              reduce using rule 14 (expression -> expression MINUS expression .)
+    MAKE            reduce using rule 14 (expression -> expression MINUS expression .)
+    PRINT           reduce using rule 14 (expression -> expression MINUS expression .)
+    IF              reduce using rule 14 (expression -> expression MINUS expression .)
+    AS_LONG_AS      reduce using rule 14 (expression -> expression MINUS expression .)
+    EXCLAIM         reduce using rule 14 (expression -> expression MINUS expression .)
+    COLON           reduce using rule 14 (expression -> expression MINUS expression .)
+    QUESTION        reduce using rule 14 (expression -> expression MINUS expression .)
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+
+  ! TIMES           [ reduce using rule 14 (expression -> expression MINUS expression .) ]
+  ! OVER            [ reduce using rule 14 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 26 ]
+  ! MINUS           [ shift and go to state 27 ]
+  ! LT              [ shift and go to state 30 ]
+  ! GT              [ shift and go to state 31 ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 41
+
+    (15) expression -> expression TIMES expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    PLUS            reduce using rule 15 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 15 (expression -> expression TIMES expression .)
+    TIMES           reduce using rule 15 (expression -> expression TIMES expression .)
+    OVER            reduce using rule 15 (expression -> expression TIMES expression .)
+    LT              reduce using rule 15 (expression -> expression TIMES expression .)
+    GT              reduce using rule 15 (expression -> expression TIMES expression .)
+    IS              reduce using rule 15 (expression -> expression TIMES expression .)
+    ARE             reduce using rule 15 (expression -> expression TIMES expression .)
+    AND             reduce using rule 15 (expression -> expression TIMES expression .)
+    OR              reduce using rule 15 (expression -> expression TIMES expression .)
+    END_PROG        reduce using rule 15 (expression -> expression TIMES expression .)
+    ID              reduce using rule 15 (expression -> expression TIMES expression .)
+    MAKE            reduce using rule 15 (expression -> expression TIMES expression .)
+    PRINT           reduce using rule 15 (expression -> expression TIMES expression .)
+    IF              reduce using rule 15 (expression -> expression TIMES expression .)
+    AS_LONG_AS      reduce using rule 15 (expression -> expression TIMES expression .)
+    EXCLAIM         reduce using rule 15 (expression -> expression TIMES expression .)
+    COLON           reduce using rule 15 (expression -> expression TIMES expression .)
+    QUESTION        reduce using rule 15 (expression -> expression TIMES expression .)
+
+  ! PLUS            [ shift and go to state 26 ]
+  ! MINUS           [ shift and go to state 27 ]
+  ! TIMES           [ shift and go to state 28 ]
+  ! OVER            [ shift and go to state 29 ]
+  ! LT              [ shift and go to state 30 ]
+  ! GT              [ shift and go to state 31 ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 42
+
+    (16) expression -> expression OVER expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    PLUS            reduce using rule 16 (expression -> expression OVER expression .)
+    MINUS           reduce using rule 16 (expression -> expression OVER expression .)
+    TIMES           reduce using rule 16 (expression -> expression OVER expression .)
+    OVER            reduce using rule 16 (expression -> expression OVER expression .)
+    LT              reduce using rule 16 (expression -> expression OVER expression .)
+    GT              reduce using rule 16 (expression -> expression OVER expression .)
+    IS              reduce using rule 16 (expression -> expression OVER expression .)
+    ARE             reduce using rule 16 (expression -> expression OVER expression .)
+    AND             reduce using rule 16 (expression -> expression OVER expression .)
+    OR              reduce using rule 16 (expression -> expression OVER expression .)
+    END_PROG        reduce using rule 16 (expression -> expression OVER expression .)
+    ID              reduce using rule 16 (expression -> expression OVER expression .)
+    MAKE            reduce using rule 16 (expression -> expression OVER expression .)
+    PRINT           reduce using rule 16 (expression -> expression OVER expression .)
+    IF              reduce using rule 16 (expression -> expression OVER expression .)
+    AS_LONG_AS      reduce using rule 16 (expression -> expression OVER expression .)
+    EXCLAIM         reduce using rule 16 (expression -> expression OVER expression .)
+    COLON           reduce using rule 16 (expression -> expression OVER expression .)
+    QUESTION        reduce using rule 16 (expression -> expression OVER expression .)
+
+  ! PLUS            [ shift and go to state 26 ]
+  ! MINUS           [ shift and go to state 27 ]
+  ! TIMES           [ shift and go to state 28 ]
+  ! OVER            [ shift and go to state 29 ]
+  ! LT              [ shift and go to state 30 ]
+  ! GT              [ shift and go to state 31 ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 43
+
+    (17) expression -> expression LT expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    LT              reduce using rule 17 (expression -> expression LT expression .)
+    GT              reduce using rule 17 (expression -> expression LT expression .)
+    IS              reduce using rule 17 (expression -> expression LT expression .)
+    ARE             reduce using rule 17 (expression -> expression LT expression .)
+    AND             reduce using rule 17 (expression -> expression LT expression .)
+    OR              reduce using rule 17 (expression -> expression LT expression .)
+    END_PROG        reduce using rule 17 (expression -> expression LT expression .)
+    ID              reduce using rule 17 (expression -> expression LT expression .)
+    MAKE            reduce using rule 17 (expression -> expression LT expression .)
+    PRINT           reduce using rule 17 (expression -> expression LT expression .)
+    IF              reduce using rule 17 (expression -> expression LT expression .)
+    AS_LONG_AS      reduce using rule 17 (expression -> expression LT expression .)
+    EXCLAIM         reduce using rule 17 (expression -> expression LT expression .)
+    COLON           reduce using rule 17 (expression -> expression LT expression .)
+    QUESTION        reduce using rule 17 (expression -> expression LT expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+
+  ! PLUS            [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! MINUS           [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! TIMES           [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! OVER            [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! LT              [ shift and go to state 30 ]
+  ! GT              [ shift and go to state 31 ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 44
+
+    (18) expression -> expression GT expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    LT              reduce using rule 18 (expression -> expression GT expression .)
+    GT              reduce using rule 18 (expression -> expression GT expression .)
+    IS              reduce using rule 18 (expression -> expression GT expression .)
+    ARE             reduce using rule 18 (expression -> expression GT expression .)
+    AND             reduce using rule 18 (expression -> expression GT expression .)
+    OR              reduce using rule 18 (expression -> expression GT expression .)
+    END_PROG        reduce using rule 18 (expression -> expression GT expression .)
+    ID              reduce using rule 18 (expression -> expression GT expression .)
+    MAKE            reduce using rule 18 (expression -> expression GT expression .)
+    PRINT           reduce using rule 18 (expression -> expression GT expression .)
+    IF              reduce using rule 18 (expression -> expression GT expression .)
+    AS_LONG_AS      reduce using rule 18 (expression -> expression GT expression .)
+    EXCLAIM         reduce using rule 18 (expression -> expression GT expression .)
+    COLON           reduce using rule 18 (expression -> expression GT expression .)
+    QUESTION        reduce using rule 18 (expression -> expression GT expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+
+  ! PLUS            [ reduce using rule 18 (expression -> expression GT expression .) ]
+  ! MINUS           [ reduce using rule 18 (expression -> expression GT expression .) ]
+  ! TIMES           [ reduce using rule 18 (expression -> expression GT expression .) ]
+  ! OVER            [ reduce using rule 18 (expression -> expression GT expression .) ]
+  ! LT              [ shift and go to state 30 ]
+  ! GT              [ shift and go to state 31 ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 45
+
+    (19) expression -> expression IS expression . QUESTION
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    QUESTION        shift and go to state 51
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 46
+
+    (20) expression -> expression ARE expression . QUESTION
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    QUESTION        shift and go to state 52
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 47
+
+    (21) expression -> expression AND expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    IS              reduce using rule 21 (expression -> expression AND expression .)
+    ARE             reduce using rule 21 (expression -> expression AND expression .)
+    AND             reduce using rule 21 (expression -> expression AND expression .)
+    OR              reduce using rule 21 (expression -> expression AND expression .)
+    END_PROG        reduce using rule 21 (expression -> expression AND expression .)
+    ID              reduce using rule 21 (expression -> expression AND expression .)
+    MAKE            reduce using rule 21 (expression -> expression AND expression .)
+    PRINT           reduce using rule 21 (expression -> expression AND expression .)
+    IF              reduce using rule 21 (expression -> expression AND expression .)
+    AS_LONG_AS      reduce using rule 21 (expression -> expression AND expression .)
+    EXCLAIM         reduce using rule 21 (expression -> expression AND expression .)
+    COLON           reduce using rule 21 (expression -> expression AND expression .)
+    QUESTION        reduce using rule 21 (expression -> expression AND expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+
+  ! PLUS            [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! MINUS           [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! TIMES           [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! OVER            [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! LT              [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! GT              [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 48
+
+    (22) expression -> expression OR expression .
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    IS              reduce using rule 22 (expression -> expression OR expression .)
+    ARE             reduce using rule 22 (expression -> expression OR expression .)
+    OR              reduce using rule 22 (expression -> expression OR expression .)
+    END_PROG        reduce using rule 22 (expression -> expression OR expression .)
+    ID              reduce using rule 22 (expression -> expression OR expression .)
+    MAKE            reduce using rule 22 (expression -> expression OR expression .)
+    PRINT           reduce using rule 22 (expression -> expression OR expression .)
+    IF              reduce using rule 22 (expression -> expression OR expression .)
+    AS_LONG_AS      reduce using rule 22 (expression -> expression OR expression .)
+    EXCLAIM         reduce using rule 22 (expression -> expression OR expression .)
+    COLON           reduce using rule 22 (expression -> expression OR expression .)
+    QUESTION        reduce using rule 22 (expression -> expression OR expression .)
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    AND             shift and go to state 34
+
+  ! PLUS            [ reduce using rule 22 (expression -> expression OR expression .) ]
+  ! MINUS           [ reduce using rule 22 (expression -> expression OR expression .) ]
+  ! TIMES           [ reduce using rule 22 (expression -> expression OR expression .) ]
+  ! OVER            [ reduce using rule 22 (expression -> expression OR expression .) ]
+  ! LT              [ reduce using rule 22 (expression -> expression OR expression .) ]
+  ! GT              [ reduce using rule 22 (expression -> expression OR expression .) ]
+  ! AND             [ reduce using rule 22 (expression -> expression OR expression .) ]
+  ! IS              [ shift and go to state 32 ]
+  ! ARE             [ shift and go to state 33 ]
+  ! OR              [ shift and go to state 35 ]
+
+
+state 49
+
+    (8) statement -> IF expression COLON statements . EXCLAIM
+    (9) statement -> IF expression COLON statements . EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> IF expression COLON statements . EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> IF expression COLON statements . EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (2) statements -> statements . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    EXCLAIM         shift and go to state 53
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statement                      shift and go to state 10
+
+state 50
+
+    (12) statement -> AS_LONG_AS expression COLON statements . EXCLAIM
+    (2) statements -> statements . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    EXCLAIM         shift and go to state 54
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statement                      shift and go to state 10
+
+state 51
+
+    (19) expression -> expression IS expression QUESTION .
+
+    PLUS            reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    MINUS           reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    TIMES           reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    OVER            reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    LT              reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    GT              reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    IS              reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    ARE             reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    AND             reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    OR              reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    END_PROG        reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    ID              reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    MAKE            reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    PRINT           reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    IF              reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    AS_LONG_AS      reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    EXCLAIM         reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    COLON           reduce using rule 19 (expression -> expression IS expression QUESTION .)
+    QUESTION        reduce using rule 19 (expression -> expression IS expression QUESTION .)
+
+
+state 52
+
+    (20) expression -> expression ARE expression QUESTION .
+
+    PLUS            reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    MINUS           reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    TIMES           reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    OVER            reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    LT              reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    GT              reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    IS              reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    ARE             reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    AND             reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    OR              reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    END_PROG        reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    ID              reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    MAKE            reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    PRINT           reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    IF              reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    AS_LONG_AS      reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    EXCLAIM         reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    COLON           reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+    QUESTION        reduce using rule 20 (expression -> expression ARE expression QUESTION .)
+
+
+state 53
+
+    (8) statement -> IF expression COLON statements EXCLAIM .
+    (9) statement -> IF expression COLON statements EXCLAIM . ELSE COLON statements EXCLAIM
+    (10) statement -> IF expression COLON statements EXCLAIM . ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> IF expression COLON statements EXCLAIM . ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+
+    END_PROG        reduce using rule 8 (statement -> IF expression COLON statements EXCLAIM .)
+    ID              reduce using rule 8 (statement -> IF expression COLON statements EXCLAIM .)
+    MAKE            reduce using rule 8 (statement -> IF expression COLON statements EXCLAIM .)
+    PRINT           reduce using rule 8 (statement -> IF expression COLON statements EXCLAIM .)
+    IF              reduce using rule 8 (statement -> IF expression COLON statements EXCLAIM .)
+    AS_LONG_AS      reduce using rule 8 (statement -> IF expression COLON statements EXCLAIM .)
+    EXCLAIM         reduce using rule 8 (statement -> IF expression COLON statements EXCLAIM .)
+    ELSE            shift and go to state 55
+    ELSE_IF         shift and go to state 56
+
+
+state 54
+
+    (12) statement -> AS_LONG_AS expression COLON statements EXCLAIM .
+
+    END_PROG        reduce using rule 12 (statement -> AS_LONG_AS expression COLON statements EXCLAIM .)
+    ID              reduce using rule 12 (statement -> AS_LONG_AS expression COLON statements EXCLAIM .)
+    MAKE            reduce using rule 12 (statement -> AS_LONG_AS expression COLON statements EXCLAIM .)
+    PRINT           reduce using rule 12 (statement -> AS_LONG_AS expression COLON statements EXCLAIM .)
+    IF              reduce using rule 12 (statement -> AS_LONG_AS expression COLON statements EXCLAIM .)
+    AS_LONG_AS      reduce using rule 12 (statement -> AS_LONG_AS expression COLON statements EXCLAIM .)
+    EXCLAIM         reduce using rule 12 (statement -> AS_LONG_AS expression COLON statements EXCLAIM .)
+
+
+state 55
+
+    (9) statement -> IF expression COLON statements EXCLAIM ELSE . COLON statements EXCLAIM
+
+    COLON           shift and go to state 57
+
+
+state 56
+
+    (10) statement -> IF expression COLON statements EXCLAIM ELSE_IF . expression COLON statements EXCLAIM
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF . expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (13) expression -> . expression PLUS expression
+    (14) expression -> . expression MINUS expression
+    (15) expression -> . expression TIMES expression
+    (16) expression -> . expression OVER expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression GT expression
+    (19) expression -> . expression IS expression QUESTION
+    (20) expression -> . expression ARE expression QUESTION
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression OR expression
+    (23) expression -> . NOT expression
+    (24) expression -> . NUMBER
+    (25) expression -> . ID
+    (26) expression -> . STRING
+    (27) expression -> . TRUE
+    (28) expression -> . FALSE
+
+    NOT             shift and go to state 15
+    NUMBER          shift and go to state 16
+    ID              shift and go to state 17
+    STRING          shift and go to state 18
+    TRUE            shift and go to state 19
+    FALSE           shift and go to state 20
+
+    expression                     shift and go to state 58
+
+state 57
+
+    (9) statement -> IF expression COLON statements EXCLAIM ELSE COLON . statements EXCLAIM
+    (2) statements -> . statements statement
+    (3) statements -> . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statements                     shift and go to state 59
+    statement                      shift and go to state 3
+
+state 58
+
+    (10) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression . COLON statements EXCLAIM
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression . COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (13) expression -> expression . PLUS expression
+    (14) expression -> expression . MINUS expression
+    (15) expression -> expression . TIMES expression
+    (16) expression -> expression . OVER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . GT expression
+    (19) expression -> expression . IS expression QUESTION
+    (20) expression -> expression . ARE expression QUESTION
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . OR expression
+
+    COLON           shift and go to state 60
+    PLUS            shift and go to state 26
+    MINUS           shift and go to state 27
+    TIMES           shift and go to state 28
+    OVER            shift and go to state 29
+    LT              shift and go to state 30
+    GT              shift and go to state 31
+    IS              shift and go to state 32
+    ARE             shift and go to state 33
+    AND             shift and go to state 34
+    OR              shift and go to state 35
+
+
+state 59
+
+    (9) statement -> IF expression COLON statements EXCLAIM ELSE COLON statements . EXCLAIM
+    (2) statements -> statements . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    EXCLAIM         shift and go to state 61
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statement                      shift and go to state 10
+
+state 60
+
+    (10) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON . statements EXCLAIM
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON . statements EXCLAIM ELSE COLON statements EXCLAIM
+    (2) statements -> . statements statement
+    (3) statements -> . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statements                     shift and go to state 62
+    statement                      shift and go to state 3
+
+state 61
+
+    (9) statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .
+
+    END_PROG        reduce using rule 9 (statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    ID              reduce using rule 9 (statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    MAKE            reduce using rule 9 (statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    PRINT           reduce using rule 9 (statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    IF              reduce using rule 9 (statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    AS_LONG_AS      reduce using rule 9 (statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    EXCLAIM         reduce using rule 9 (statement -> IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+
+
+state 62
+
+    (10) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements . EXCLAIM
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements . EXCLAIM ELSE COLON statements EXCLAIM
+    (2) statements -> statements . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    EXCLAIM         shift and go to state 63
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statement                      shift and go to state 10
+
+state 63
+
+    (10) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM . ELSE COLON statements EXCLAIM
+
+    END_PROG        reduce using rule 10 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .)
+    ID              reduce using rule 10 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .)
+    MAKE            reduce using rule 10 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .)
+    PRINT           reduce using rule 10 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .)
+    IF              reduce using rule 10 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .)
+    AS_LONG_AS      reduce using rule 10 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .)
+    EXCLAIM         reduce using rule 10 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM .)
+    ELSE            shift and go to state 64
+
+
+state 64
+
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE . COLON statements EXCLAIM
+
+    COLON           shift and go to state 65
+
+
+state 65
+
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON . statements EXCLAIM
+    (2) statements -> . statements statement
+    (3) statements -> . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statements                     shift and go to state 66
+    statement                      shift and go to state 3
+
+state 66
+
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements . EXCLAIM
+    (2) statements -> statements . statement
+    (4) statement -> . ID IS expression
+    (5) statement -> . ID ARE expression
+    (6) statement -> . MAKE ID expression
+    (7) statement -> . PRINT expression
+    (8) statement -> . IF expression COLON statements EXCLAIM
+    (9) statement -> . IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (10) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM
+    (11) statement -> . IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM
+    (12) statement -> . AS_LONG_AS expression COLON statements EXCLAIM
+
+    EXCLAIM         shift and go to state 67
+    ID              shift and go to state 4
+    MAKE            shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    AS_LONG_AS      shift and go to state 8
+
+    statement                      shift and go to state 10
+
+state 67
+
+    (11) statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .
+
+    END_PROG        reduce using rule 11 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    ID              reduce using rule 11 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    MAKE            reduce using rule 11 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    PRINT           reduce using rule 11 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    IF              reduce using rule 11 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    AS_LONG_AS      reduce using rule 11 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+    EXCLAIM         reduce using rule 11 (statement -> IF expression COLON statements EXCLAIM ELSE_IF expression COLON statements EXCLAIM ELSE COLON statements EXCLAIM .)
+
