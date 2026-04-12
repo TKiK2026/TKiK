@@ -252,6 +252,10 @@ def evaluate(exp, variables):
         if isinstance(left_val, (int, float)) and isinstance(right_val, (int, float)):
             return left_val + right_val
 
+        if isinstance(left_val, bool) or isinstance(right_val, bool):
+            print("Error: Numbers and facts don't mix! Fake news!")
+            return 0
+
         return type_error('+', left_val, right_val)
 
     if op == 'MINUS': return left_val - right_val
