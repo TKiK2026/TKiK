@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99840618-1c2c-4da0-88b5-21cf43515f01" name="Changes" comment="nowe funkcjonalnosci">
+      <change afterPath="$PROJECT_DIR$/projekt/grammar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projekt/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/projekt/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projekt/parser.out" beforeDir="false" afterPath="$PROJECT_DIR$/projekt/parser.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projekt/parsetab.py" beforeDir="false" afterPath="$PROJECT_DIR$/projekt/parsetab.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projekt/scratch2.py" beforeDir="false" afterPath="$PROJECT_DIR$/projekt/scratch2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -90,9 +94,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/skaner/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -115,10 +117,8 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <module name="" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projekt/scratch.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />

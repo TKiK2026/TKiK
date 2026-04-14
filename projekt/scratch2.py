@@ -9,7 +9,7 @@ tokens = (
     "AMERICA_GREAT", "FACT", "LIE", "LPAREN", "RPAREN",
     "LBRACE", "RBRACE", "IF", "ELSE", "GREATER", "LESS",
     "QUESTION", "GE", "LE", "GT", "LT", "EQ", "AND", "OR",
-    "AS", "LONG"
+    "AS_LONG_AS"
 )
 t_LPAREN = r','
 t_RPAREN = r';'
@@ -31,6 +31,9 @@ t_OVER = r'/'
 
 def t_AMERICA_GREAT(t):
     r"""America\s+is\s+great\."""
+    return t
+def t_AS_LONG_AS(t):
+    r"""as\s+long\s+as"""
     return t
 
 def t_ID(t):
@@ -59,7 +62,6 @@ def t_ID(t):
 
 def t_STRING(t):
     r'\"[^\"]*\"'
-    t.value = t.value[1:-1]
     return t
 
 def t_NUMBER(t):
@@ -131,8 +133,8 @@ def p_if_statement(p):
         p[0] = ('if_else', p[2], p[4], [p[7]])
 
 def p_loop_statement(p):
-    """loop_statement : AS LONG AS comparison LBRACE body RBRACE"""
-    p[0] = ('while', p[4], p[6])
+    """loop_statement : AS_LONG_AS comparison LBRACE body RBRACE"""
+    p[0] = ('while', p[2], p[4])
 
 def p_comparison(p):
     """comparison : expression EQ expression
@@ -160,6 +162,14 @@ def p_comparison_or(p):
 
 def p_comparison_and(p):
     """comparison : comparison AND comparison"""
+    p[0] = ('AND', p[1], p[3])
+
+def p_expression_or(p):
+    """expression : expression OR expression"""
+    p[0] = ('OR', p[1], p[3])
+
+def p_expression_and(p):
+    """expression : expression AND expression"""
     p[0] = ('AND', p[1], p[3])
 
 def p_expression_binop(p):
@@ -230,6 +240,7 @@ def evaluate(exp, variables):
     if not isinstance(exp, tuple):
         if isinstance(exp, int) or isinstance(exp, bool): return exp
         if isinstance(exp, str) and exp in variables: return variables[exp]
+        if isinstance(exp, str): return exp[1:-1]
         return exp
 
     op, l, r = exp
@@ -265,8 +276,7 @@ def evaluate(exp, variables):
             print("Error: Dividing by zero? Not in this country!")
             return 0
         return left_val / right_val
-
-    if op == 'ASSIGN_OP': return left_val == right_val
+    if op == 'ASSIGN_OP': return left_val==right_val
     if op == 'EQ': return left_val == right_val
     if op == 'GREATER': return left_val > right_val
     if op == 'LESS': return left_val < right_val
@@ -310,54 +320,32 @@ def run_interpreter(instructions, variables=None):
 parser = yacc.yacc()
 
 data = """
-wall = 100
-wall is 150
-make is_huge wall >= 50 ?
-say "Is the wall huge using symbols?"
-say is_huge
-
-say "--- Testing Math & Types ---"
-say "Wall is " + wall + " meters long."
-say "Adding fact to a text: " + fact
-say "This will fail: "
-make fail fact + lie
-
-wall are 100
-
-say "--- Testing If Statements ---"
-if wall == 100 :
-    say "The wall is exactly 100 (checked with ==)"
+make wall "test"
+make america "great"
+make wall_test wall is "test"?
+make america_test america is "great"?
+make result wall_test and america_test
+as long as result==fact:
+    say "Jestem w pętli"
+    make result lie
 !
-make wall 150
-say wall is 150?
-
-wall = 100
-
-say "--- Testing Loop ---"
-as long as wall < 103 :
-    say "Building wall..."
-    make wall wall + 1
-!
-
-say "--- Testing Else If & Logic ---"
-if wall == 50 or wall < 100 :
-    say "Wall is small"
-! else if ,wall > 100; and ,wall < 200; :
-    say "Wall is huge and perfect!"
-! else :
-    say "Wall is something else"
-!
-
-say "--- Testing Questions ---"
-make is_safe wall is 103 ?
-say "Is the wall safe?"
-say is_safe
+say result
 
 America is great.
 """
-
+# make wall_test ,wall is "test"?;
+# make america_test ,america is "bad"?;
+# make result ,wall_test and america_test;
+# say result
 result = parser.parse(data, lexer=lexer)
 
 if result:
     print("--- Program Wykonany ---")
     run_interpreter(result)
+print(result)
+
+# Make ID wartość zmienić że tylko w cudzysłowie
+# As long as - jeden token
+# is, are - jeden token
+# Ujednolicić ASSIGN_OP
+# ID ASSIGN_OP ID/VALUE ?
