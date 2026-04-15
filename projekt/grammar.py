@@ -1,5 +1,6 @@
 def p_program(p):
-    """program : body AMERICA_GREAT"""
+    """program : body AMERICA_GREAT
+                 | AMERICA_GREAT"""
 
 def p_body(p):
     """body : statement
