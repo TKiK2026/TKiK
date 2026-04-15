@@ -25,7 +25,7 @@ Program przyjmuje kod źródłowy w języku **TrumpScript** i generuje równowa�
 ```text
 make wall "test"
 america is "great"
-make wall_test ,wall is "test";?
+make wall_test wall is "test"?
 make america_test america is "great"?
 result is ,wall_test and america_test;
 as long as result==fact:
