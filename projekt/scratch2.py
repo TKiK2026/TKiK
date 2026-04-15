@@ -88,7 +88,8 @@ precedence = (
 
 
 def p_program(p):
-    """program : body AMERICA_GREAT"""
+    """program : body AMERICA_GREAT
+                | AMERICA_GREAT"""
     p[0] = p[1]
 
 def p_body(p):
@@ -321,10 +322,10 @@ parser = yacc.yacc()
 
 data = """
 make wall "test"
-make america "great"
+america is "great"
 make wall_test wall is "test"?
 make america_test america is "great"?
-make result wall_test and america_test
+result is ,wall_test and america_test;
 as long as result==fact:
     say "Jestem w pętli"
     make result lie
