@@ -218,18 +218,18 @@ test_cases = [
     'if lie: say "Fake News" ! else: say "True Story"  if fact: say "I love" !! America is great.',
     'as long as x > 0: x = x - 1 ! America is great.',
     """
-    Make counter 5
-    as long as counter > 0?:
-        if counter is 3? :
-            say "Three is a great number"
-        ! else :
-            say "Not three"
-        !
-        counter = counter - 1
+    make wall "test"
+    america is "great"
+    make wall_test wall is "test"?
+    make america_test america is "great"?
+    result is ,wall_test and america_test;
+    as long as result==fact:
+        say "Jestem w pętli"
+        make result lie
     !
-    say "Bigly finished"
+    say result
     America is great.
-    """
+"""
 ]
 
 if __name__ == "__main__":
