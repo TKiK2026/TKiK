@@ -4,7 +4,7 @@ import ply.yacc as yacc
 
 tokens = (
     "ID", "STRING", "PLUS", "MINUS",
-    "ASSIGN_OP_IS", "ASSIGN_OP_ARE", "ASSIGN_OP_SIGN",
+    "ASSIGN_OP_WORD", "ASSIGN_OP_SIGN",
     "MAKE", "PRINT", "NUMBER", "TIMES", "OVER",
     "AMERICA_GREAT", "FACT", "LIE", "LPAREN", "RPAREN",
     "LBRACE", "RBRACE", "IF", "ELSE", "GREATER", "LESS",
@@ -40,8 +40,8 @@ def t_ID(t):
     r"""[a-zA-Z_][a-zA-Z_0-9]*"""
     val = t.value.lower()
     keywords = {
-        'is': 'ASSIGN_OP_IS',
-        'are': 'ASSIGN_OP_ARE',
+        'is': 'ASSIGN_OP_WORD',
+        'are': 'ASSIGN_OP_WORD',
         'make': 'MAKE',
         'say': 'PRINT', 'tell': 'PRINT',
         'plus': 'PLUS',
@@ -55,7 +55,6 @@ def t_ID(t):
         'more': 'GREATER', 'greater': 'GREATER', 'larger': 'GREATER',
         'less': 'LESS', 'fewer': 'LESS', 'smaller': 'LESS',
         'and': 'AND', 'or': 'OR',
-        'as': 'AS', 'long': 'LONG'
     }
     t.type = keywords.get(val, 'ID')
     return t
@@ -81,7 +80,7 @@ def t_error(t):
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
-    ('left', 'EQ', 'ASSIGN_OP_IS', 'ASSIGN_OP_ARE', 'ASSIGN_OP_SIGN', 'GE', 'LE', 'GT', 'LT'),
+    ('left', 'EQ', 'ASSIGN_OP_WORD', 'GE', 'LE', 'GT', 'LT'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'OVER'),
 )
@@ -89,7 +88,7 @@ precedence = (
 
 def p_program(p):
     """program : body AMERICA_GREAT
-                | AMERICA_GREAT"""
+               | AMERICA_GREAT"""
     p[0] = p[1]
 
 def p_body(p):
@@ -102,15 +101,28 @@ def p_body(p):
 
 def p_statement(p):
     """statement : assignment
-                | print_statement
-                | if_statement
-                | loop_statement"""
+                 | print_statement
+                 | if_statement
+                 | loop_statement"""
     p[0] = p[1]
+
+def p_logical_value(p):
+    """logical_value : expression AND expression
+                     | comparison AND comparison
+                     | expression OR expression
+                     | comparison OR comparison
+                     | comparison
+                     | question_expression
+                     | FACT
+                     | LIE"""
+    if len(p) == 4:
+        p[0] = (p.slice[2].type, p[1], p[3])
+    else:
+        p[0] = p[1]
 
 def p_assignment(p):
     """assignment : ID ASSIGN_OP_SIGN expression
-                  | ID ASSIGN_OP_IS expression
-                  | ID ASSIGN_OP_ARE expression
+                  | ID ASSIGN_OP_WORD expression
                   | MAKE ID expression"""
     if len(p) == 4:
         if p[1].lower() == "make":
@@ -123,9 +135,9 @@ def p_print(p):
     p[0] = ('print', p[2])
 
 def p_if_statement(p):
-    """if_statement : IF comparison LBRACE body RBRACE
-                    | IF comparison LBRACE body RBRACE ELSE LBRACE body RBRACE
-                    | IF comparison LBRACE body RBRACE ELSE if_statement"""
+    """if_statement : IF logical_value LBRACE body RBRACE
+                    | IF logical_value LBRACE body RBRACE ELSE LBRACE body RBRACE
+                    | IF logical_value LBRACE body RBRACE ELSE if_statement"""
     if len(p) == 6:
         p[0] = ('if', p[2], p[4])
     elif len(p) == 10:
@@ -134,11 +146,12 @@ def p_if_statement(p):
         p[0] = ('if_else', p[2], p[4], [p[7]])
 
 def p_loop_statement(p):
-    """loop_statement : AS_LONG_AS comparison LBRACE body RBRACE"""
+    """loop_statement : AS_LONG_AS logical_value LBRACE body RBRACE"""
     p[0] = ('while', p[2], p[4])
 
 def p_comparison(p):
     """comparison : expression EQ expression
+                  | expression ASSIGN_OP_WORD expression
                   | expression GREATER expression
                   | expression LESS expression
                   | expression GE expression
@@ -146,7 +159,7 @@ def p_comparison(p):
                   | expression GT expression
                   | expression LT expression"""
     if len(p) == 4:
-        type_map = {'EQ': 'EQ', 'GE': 'GREATER_EQUAL', 'LE': 'LESS_EQUAL', 'GT': 'GREATER', 'LT': 'LESS'}
+        type_map = {'ASSIGN_OP_WORD': 'EQ', 'EQ': 'EQ', 'GE': 'GREATER_EQUAL', 'LE': 'LESS_EQUAL', 'GT': 'GREATER', 'LT': 'LESS'}
         op_type = p.slice[2].type
         p[0] = (type_map.get(op_type, op_type), p[1], p[3])
     else:
@@ -156,22 +169,6 @@ def p_comparison(p):
 def p_comparison_group(p):
     """comparison : LPAREN comparison RPAREN"""
     p[0] = p[2]
-
-def p_comparison_or(p):
-    """comparison : comparison OR comparison"""
-    p[0] = ('OR', p[1], p[3])
-
-def p_comparison_and(p):
-    """comparison : comparison AND comparison"""
-    p[0] = ('AND', p[1], p[3])
-
-def p_expression_or(p):
-    """expression : expression OR expression"""
-    p[0] = ('OR', p[1], p[3])
-
-def p_expression_and(p):
-    """expression : expression AND expression"""
-    p[0] = ('AND', p[1], p[3])
 
 def p_expression_binop(p):
     """expression : expression PLUS expression
@@ -189,8 +186,7 @@ def p_expression_value(p):
     p[0] = p[1]
 
 def p_question_expr(p):
-    """question_expr : expression ASSIGN_OP_IS expression QUESTION
-                     | expression ASSIGN_OP_ARE expression QUESTION
+    """question_expr : expression ASSIGN_OP_WORD expression QUESTION
                      | expression ASSIGN_OP_SIGN expression QUESTION
                      | expression GREATER expression QUESTION
                      | expression LESS expression QUESTION
@@ -199,7 +195,7 @@ def p_question_expr(p):
                      | expression GT expression QUESTION
                      | expression LT expression QUESTION"""
     if len(p) == 5:
-        type_map = {'ASSIGN_OP_IS': 'ASSIGN_OP', 'ASSIGN_OP_ARE': 'ASSIGN_OP', 'ASSIGN_OP_SIGN': 'ASSIGN_OP',
+        type_map = {'ASSIGN_OP_WORD': 'ASSIGN_OP', 'ASSIGN_OP_SIGN': 'ASSIGN_OP',
                     'GE': 'GREATER_EQUAL', 'LE': 'LESS_EQUAL', 'GT': 'GREATER', 'LT': 'LESS'}
         token_type = p.slice[2].type
         p[0] = (type_map.get(token_type, token_type), p[1], p[3])
@@ -210,19 +206,17 @@ def p_question_expr(p):
 def p_value(p):
     """value : NUMBER
              | STRING
-             | ID
-             | LIE
-             | FACT
-             | question_expr"""
-    if len(p) == 2:
-        if isinstance(p[1], tuple):
-            p[0] = p[1]
-        elif p.slice[1].type == 'FACT':
-            p[0] = True
-        elif p.slice[1].type == 'LIE':
-            p[0] = False
-        else:
-            p[0] = p[1]
+             | ID"""
+    if p.slice[1].type == 'STRING':
+        p[0] = p[1]
+    elif p.slice[1].type == 'ID':
+        p[0] = p[1]
+    elif p.slice[1].type == 'FACT':
+        p[0] = True
+    elif p.slice[1].type == 'LIE':
+        p[0] = False
+    else:
+        p[0] = p[1]
 
 def p_error(p):
     if p:
@@ -237,116 +231,111 @@ def type_error(op, l, r):
     print(f"Type error: {l} {op} {r}")
     return 0
 
-def evaluate(exp, variables):
-    if not isinstance(exp, tuple):
-        if isinstance(exp, int) or isinstance(exp, bool): return exp
-        if isinstance(exp, str) and exp in variables: return variables[exp]
-        if isinstance(exp, str): return exp[1:-1]
-        return exp
-
-    op, l, r = exp
-    op = op.upper()
-    left_val = evaluate(l, variables)
-    right_val = evaluate(r, variables)
-
-    if op == 'PLUS':
-        if isinstance(left_val, str) or isinstance(right_val, str):
-            def to_str(val):
-                if val is True: return "fact"
-                if val is False: return "lie"
-                return str(val)
-            return to_str(left_val) + to_str(right_val)
-
-        if isinstance(left_val, bool) or isinstance(right_val, bool):
-            print("Error: You can't add facts and lies together!")
-            return 0
-
-        if isinstance(left_val, (int, float)) and isinstance(right_val, (int, float)):
-            return left_val + right_val
-
-        if isinstance(left_val, bool) or isinstance(right_val, bool):
-            print("Error: Numbers and facts don't mix! Fake news!")
-            return 0
-
-        return type_error('+', left_val, right_val)
-
-    if op == 'MINUS': return left_val - right_val
-    if op == 'TIMES': return left_val * right_val
-    if op == 'OVER':
-        if right_val == 0:
-            print("Error: Dividing by zero? Not in this country!")
-            return 0
-        return left_val / right_val
-    if op == 'ASSIGN_OP': return left_val==right_val
-    if op == 'EQ': return left_val == right_val
-    if op == 'GREATER': return left_val > right_val
-    if op == 'LESS': return left_val < right_val
-    if op == 'GREATER_EQUAL': return left_val >= right_val
-    if op == 'LESS_EQUAL': return left_val <= right_val
-    if op == 'AND': return bool(left_val) and bool(right_val)
-    if op == 'OR': return left_val or right_val
-
-    return 0
-
-def run_interpreter(instructions, variables=None):
-    if variables is None: variables = {}
-
-    for instr in instructions:
-        type = instr[0]
-
-        if type == "assign":
-            var_name = instr[1]
-            variables[var_name] = evaluate(instr[2], variables)
-        elif type == "print":
-            val = evaluate(instr[1], variables)
-            if val is True:
-                print("Fact")
-            elif val is False:
-                print("Lie")
-            else:
-                print(val)
-        elif type == "if":
-            if evaluate(instr[1], variables): run_interpreter(instr[2], variables)
-        elif type == "if_else":
-            if evaluate(instr[1], variables):
-                run_interpreter(instr[2], variables)
-            else:
-                run_interpreter(instr[3], variables)
-        elif type == "while":
-            while evaluate(instr[1], variables): run_interpreter(instr[2], variables)
-
-    return variables
+# def evaluate(exp, variables):
+#     if not isinstance(exp, tuple):
+#         if isinstance(exp, bool): return exp
+#         if isinstance(exp, int): return exp
+#
+#         if isinstance(exp, str) and exp.startswith('"') and exp.endswith('"'):
+#             return exp[1:-1]
+#
+#         if isinstance(exp, str):
+#             if exp in variables:
+#                 return variables[exp]
+#             else:
+#                 print(f"Error: Variable '{exp}' is fake news (not defined)!")
+#                 return 0
+#         return exp
+#
+#     op, l, r = exp
+#     op = op.upper()
+#     left_val = evaluate(l, variables)
+#     right_val = evaluate(r, variables)
+#
+#     if op == 'PLUS':
+#         if isinstance(left_val, str) or isinstance(right_val, str):
+#             def to_str(val):
+#                 if val is True: return "fact"
+#                 if val is False: return "lie"
+#                 return str(val)
+#             return to_str(left_val) + to_str(right_val)
+#
+#         if isinstance(left_val, bool) or isinstance(right_val, bool):
+#             print("Error: You can't add facts and lies together!")
+#             return 0
+#
+#         if isinstance(left_val, (int, float)) and isinstance(right_val, (int, float)):
+#             return left_val + right_val
+#
+#         if isinstance(left_val, bool) or isinstance(right_val, bool):
+#             print("Error: Numbers and facts don't mix! Fake news!")
+#             return 0
+#
+#         return type_error('+', left_val, right_val)
+#
+#     if op == 'MINUS': return left_val - right_val
+#     if op == 'TIMES': return left_val * right_val
+#     if op == 'OVER':
+#         if right_val == 0:
+#             print("Error: Dividing by zero? Not in this country!")
+#             return 0
+#         return left_val / right_val
+#     if op == 'ASSIGN_OP': return left_val==right_val
+#     if op == 'EQ': return left_val == right_val
+#     if op == 'GREATER': return left_val > right_val
+#     if op == 'LESS': return left_val < right_val
+#     if op == 'GREATER_EQUAL': return left_val >= right_val
+#     if op == 'LESS_EQUAL': return left_val <= right_val
+#     if op == 'AND': return bool(left_val) and bool(right_val)
+#     if op == 'OR': return left_val or right_val
+#
+#     return 0
+#
+# def run_interpreter(instructions, variables=None):
+#     if variables is None: variables = {}
+#
+#     for instr in instructions:
+#         type = instr[0]
+#
+#         if type == "assign":
+#             var_name = instr[1]
+#             variables[var_name] = evaluate(instr[2], variables)
+#         elif type == "print":
+#             val = evaluate(instr[1], variables)
+#             if val is True:
+#                 print("Fact")
+#             elif val is False:
+#                 print("Lie")
+#             else:
+#                 print(val)
+#         elif type == "if":
+#             if evaluate(instr[1], variables): run_interpreter(instr[2], variables)
+#         elif type == "if_else":
+#             if evaluate(instr[1], variables):
+#                 run_interpreter(instr[2], variables)
+#             else:
+#                 run_interpreter(instr[3], variables)
+#         elif type == "while":
+#             while evaluate(instr[1], variables): run_interpreter(instr[2], variables)
+#
+#     return variables
 
 
 parser = yacc.yacc()
 
 data = """
 make wall "test"
-america is "great"
-make wall_test wall is "test"?
-make america_test america is "great"?
-result is ,wall_test and america_test;
-as long as result==fact:
-    say "Jestem w pętli"
-    make result lie
+say wall
+as long as ,wall is "test" ?; :
+    say wall
+    wall is "not test"
 !
-say result
-
 America is great.
 """
-# make wall_test ,wall is "test"?;
-# make america_test ,america is "bad"?;
-# make result ,wall_test and america_test;
-# say result
 result = parser.parse(data, lexer=lexer)
 
 if result:
     print("--- Program Wykonany ---")
-    run_interpreter(result)
 print(result)
 
-# Make ID wartość zmienić że tylko w cudzysłowie
-# As long as - jeden token
-# is, are - jeden token
-# Ujednolicić ASSIGN_OP
 # ID ASSIGN_OP ID/VALUE ?
