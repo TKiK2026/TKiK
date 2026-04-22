@@ -28,7 +28,7 @@ america is "great"
 make wall_test wall is "test"?
 make america_test america is "great"?
 result is ,wall_test and america_test;
-as long as result==fact:
+as long as result:
     say "Jestem w pętli"
     make result lie
 !
