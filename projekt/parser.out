@@ -11,76 +11,85 @@ Rule 5     statement -> assignment
 Rule 6     statement -> print_statement
 Rule 7     statement -> if_statement
 Rule 8     statement -> loop_statement
-Rule 9     expression -> expression PLUS expression
-Rule 10    expression -> expression MINUS expression
-Rule 11    expression -> expression TIMES expression
-Rule 12    expression -> expression OVER expression
-Rule 13    expression -> expression AND expression
-Rule 14    expression -> expression OR expression
-Rule 15    expression -> expression EQ expression
-Rule 16    expression -> expression GE expression
-Rule 17    expression -> expression LE expression
-Rule 18    expression -> expression GT expression
-Rule 19    expression -> expression LT expression
-Rule 20    expression -> expression ASSIGN_OP_WORD expression
-Rule 21    expression -> expression QUESTION
-Rule 22    expression -> LPAREN expression RPAREN
-Rule 23    expression -> NUMBER
-Rule 24    expression -> STRING
-Rule 25    expression -> ID
-Rule 26    expression -> FACT
-Rule 27    expression -> LIE
-Rule 28    assignment -> ID ASSIGN_OP_SIGN expression
-Rule 29    assignment -> ID ASSIGN_OP_WORD expression
-Rule 30    assignment -> MAKE ID expression
-Rule 31    print_statement -> PRINT expression
-Rule 32    if_statement -> IF expression LBRACE body RBRACE
-Rule 33    if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-Rule 34    loop_statement -> AS_LONG_AS expression LBRACE body RBRACE
+Rule 9     arithmetic_operation -> NUMBER PLUS NUMBER
+Rule 10    arithmetic_operation -> NUMBER MINUS NUMBER
+Rule 11    arithmetic_operation -> NUMBER TIMES NUMBER
+Rule 12    arithmetic_operation -> NUMBER OVER NUMBER
+Rule 13    arithmetic_operation -> NUMBER
+Rule 14    logical_expression -> logical_expression AND logical_expression
+Rule 15    logical_expression -> logical_expression OR logical_expression
+Rule 16    logical_expression -> comparison
+Rule 17    logical_expression -> question_expression
+Rule 18    logical_expression -> FACT
+Rule 19    logical_expression -> LIE
+Rule 20    comparison -> arithmetic_operation EQ arithmetic_operation
+Rule 21    comparison -> arithmetic_operation GE arithmetic_operation
+Rule 22    comparison -> arithmetic_operation LE arithmetic_operation
+Rule 23    comparison -> arithmetic_operation GT arithmetic_operation
+Rule 24    comparison -> arithmetic_operation LT arithmetic_operation
+Rule 25    comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+Rule 26    question_expression -> comparison QUESTION
+Rule 27    arithmetic_operation -> LPAREN arithmetic_operation RPAREN
+Rule 28    assignment -> ID ASSIGN_OP_SIGN value
+Rule 29    assignment -> ID ASSIGN_OP_WORD value
+Rule 30    assignment -> MAKE ID value
+Rule 31    print_statement -> PRINT value
+Rule 32    if_statement -> IF logical_expression LBRACE body RBRACE
+Rule 33    if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+Rule 34    if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement
+Rule 35    loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE
+Rule 36    value -> arithmetic_operation
+Rule 37    value -> STRING
+Rule 38    value -> ID
+Rule 39    value -> logical_expression
 
 Terminals, with rules where they appear
 
 AMERICA_GREAT        : 1 2
-AND                  : 13
+AND                  : 14
 ASSIGN_OP_SIGN       : 28
-ASSIGN_OP_WORD       : 20 29
-AS_LONG_AS           : 34
-ELSE                 : 33
-EQ                   : 15
-FACT                 : 26
-GE                   : 16
-GT                   : 18
-ID                   : 25 28 29 30
-IF                   : 32 33
-LBRACE               : 32 33 33 34
-LE                   : 17
-LIE                  : 27
-LPAREN               : 22
-LT                   : 19
+ASSIGN_OP_WORD       : 25 29
+AS_LONG_AS           : 35
+ELSE                 : 33 34
+EQ                   : 20
+FACT                 : 18
+GE                   : 21
+GT                   : 23
+ID                   : 28 29 30 38
+IF                   : 32 33 34
+LBRACE               : 32 33 33 34 35
+LE                   : 22
+LIE                  : 19
+LPAREN               : 27
+LT                   : 24
 MAKE                 : 30
 MINUS                : 10
-NUMBER               : 23
-OR                   : 14
+NUMBER               : 9 9 10 10 11 11 12 12 13
+OR                   : 15
 OVER                 : 12
 PLUS                 : 9
 PRINT                : 31
-QUESTION             : 21
-RBRACE               : 32 33 33 34
-RPAREN               : 22
-STRING               : 24
+QUESTION             : 26
+RBRACE               : 32 33 33 34 35
+RPAREN               : 27
+STRING               : 37
 TIMES                : 11
 error                : 
 
 Nonterminals, with rules where they appear
 
+arithmetic_operation : 20 20 21 21 22 22 23 23 24 24 25 25 27 36
 assignment           : 5
-body                 : 1 4 32 33 33 34
-expression           : 9 9 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 22 28 29 30 31 32 33 34
-if_statement         : 7
+body                 : 1 4 32 33 33 34 35
+comparison           : 16 26
+if_statement         : 7 34
+logical_expression   : 14 14 15 15 32 33 34 35 39
 loop_statement       : 8
 print_statement      : 6
 program              : 0
+question_expression  : 17
 statement            : 3 4
+value                : 28 29 30 31
 
 Parsing method: LALR
 
@@ -95,13 +104,14 @@ state 0
     (6) statement -> . print_statement
     (7) statement -> . if_statement
     (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
 
     AMERICA_GREAT   shift and go to state 3
     ID              shift and go to state 9
@@ -132,13 +142,14 @@ state 2
     (6) statement -> . print_statement
     (7) statement -> . if_statement
     (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
 
     AMERICA_GREAT   shift and go to state 14
     ID              shift and go to state 9
@@ -227,8 +238,8 @@ state 8
 
 state 9
 
-    (28) assignment -> ID . ASSIGN_OP_SIGN expression
-    (29) assignment -> ID . ASSIGN_OP_WORD expression
+    (28) assignment -> ID . ASSIGN_OP_SIGN value
+    (29) assignment -> ID . ASSIGN_OP_WORD value
 
     ASSIGN_OP_SIGN  shift and go to state 16
     ASSIGN_OP_WORD  shift and go to state 17
@@ -236,107 +247,118 @@ state 9
 
 state 10
 
-    (30) assignment -> MAKE . ID expression
+    (30) assignment -> MAKE . ID value
 
     ID              shift and go to state 18
 
 
 state 11
 
-    (31) print_statement -> PRINT . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (31) print_statement -> PRINT . value
+    (36) value -> . arithmetic_operation
+    (37) value -> . STRING
+    (38) value -> . ID
+    (39) value -> . logical_expression
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    STRING          shift and go to state 21
+    ID              shift and go to state 22
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
 
-    expression                     shift and go to state 19
+    value                          shift and go to state 19
+    arithmetic_operation           shift and go to state 20
+    logical_expression             shift and go to state 23
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
 
 state 12
 
-    (32) if_statement -> IF . expression LBRACE body RBRACE
-    (33) if_statement -> IF . expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (32) if_statement -> IF . logical_expression LBRACE body RBRACE
+    (33) if_statement -> IF . logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> IF . logical_expression LBRACE body RBRACE ELSE if_statement
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 26
+    logical_expression             shift and go to state 30
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
+    arithmetic_operation           shift and go to state 31
 
 state 13
 
-    (34) loop_statement -> AS_LONG_AS . expression LBRACE body RBRACE
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (35) loop_statement -> AS_LONG_AS . logical_expression LBRACE body RBRACE
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 27
+    logical_expression             shift and go to state 32
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
+    arithmetic_operation           shift and go to state 31
 
 state 14
 
@@ -360,1799 +382,655 @@ state 15
 
 state 16
 
-    (28) assignment -> ID ASSIGN_OP_SIGN . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (28) assignment -> ID ASSIGN_OP_SIGN . value
+    (36) value -> . arithmetic_operation
+    (37) value -> . STRING
+    (38) value -> . ID
+    (39) value -> . logical_expression
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    STRING          shift and go to state 21
+    ID              shift and go to state 22
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
 
-    expression                     shift and go to state 28
+    value                          shift and go to state 33
+    arithmetic_operation           shift and go to state 20
+    logical_expression             shift and go to state 23
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
 
 state 17
 
-    (29) assignment -> ID ASSIGN_OP_WORD . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (29) assignment -> ID ASSIGN_OP_WORD . value
+    (36) value -> . arithmetic_operation
+    (37) value -> . STRING
+    (38) value -> . ID
+    (39) value -> . logical_expression
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    STRING          shift and go to state 21
+    ID              shift and go to state 22
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
 
-    expression                     shift and go to state 29
+    value                          shift and go to state 34
+    arithmetic_operation           shift and go to state 20
+    logical_expression             shift and go to state 23
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
 
 state 18
 
-    (30) assignment -> MAKE ID . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (30) assignment -> MAKE ID . value
+    (36) value -> . arithmetic_operation
+    (37) value -> . STRING
+    (38) value -> . ID
+    (39) value -> . logical_expression
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    STRING          shift and go to state 21
+    ID              shift and go to state 22
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
 
-    expression                     shift and go to state 30
+    value                          shift and go to state 35
+    arithmetic_operation           shift and go to state 20
+    logical_expression             shift and go to state 23
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
 
 state 19
 
-    (31) print_statement -> PRINT expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (31) print_statement -> PRINT value .
 
-    AMERICA_GREAT   reduce using rule 31 (print_statement -> PRINT expression .)
-    ID              reduce using rule 31 (print_statement -> PRINT expression .)
-    MAKE            reduce using rule 31 (print_statement -> PRINT expression .)
-    PRINT           reduce using rule 31 (print_statement -> PRINT expression .)
-    IF              reduce using rule 31 (print_statement -> PRINT expression .)
-    AS_LONG_AS      reduce using rule 31 (print_statement -> PRINT expression .)
-    RBRACE          reduce using rule 31 (print_statement -> PRINT expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    OR              shift and go to state 36
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
+    AMERICA_GREAT   reduce using rule 31 (print_statement -> PRINT value .)
+    ID              reduce using rule 31 (print_statement -> PRINT value .)
+    MAKE            reduce using rule 31 (print_statement -> PRINT value .)
+    PRINT           reduce using rule 31 (print_statement -> PRINT value .)
+    IF              reduce using rule 31 (print_statement -> PRINT value .)
+    AS_LONG_AS      reduce using rule 31 (print_statement -> PRINT value .)
+    RBRACE          reduce using rule 31 (print_statement -> PRINT value .)
 
 
 state 20
 
-    (22) expression -> LPAREN . expression RPAREN
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (36) value -> arithmetic_operation .
+    (20) comparison -> arithmetic_operation . EQ arithmetic_operation
+    (21) comparison -> arithmetic_operation . GE arithmetic_operation
+    (22) comparison -> arithmetic_operation . LE arithmetic_operation
+    (23) comparison -> arithmetic_operation . GT arithmetic_operation
+    (24) comparison -> arithmetic_operation . LT arithmetic_operation
+    (25) comparison -> arithmetic_operation . ASSIGN_OP_WORD arithmetic_operation
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    AMERICA_GREAT   reduce using rule 36 (value -> arithmetic_operation .)
+    ID              reduce using rule 36 (value -> arithmetic_operation .)
+    MAKE            reduce using rule 36 (value -> arithmetic_operation .)
+    PRINT           reduce using rule 36 (value -> arithmetic_operation .)
+    IF              reduce using rule 36 (value -> arithmetic_operation .)
+    AS_LONG_AS      reduce using rule 36 (value -> arithmetic_operation .)
+    RBRACE          reduce using rule 36 (value -> arithmetic_operation .)
+    EQ              shift and go to state 36
+    GE              shift and go to state 37
+    LE              shift and go to state 38
+    GT              shift and go to state 39
+    LT              shift and go to state 40
+    ASSIGN_OP_WORD  shift and go to state 41
 
-    expression                     shift and go to state 44
 
 state 21
 
-    (23) expression -> NUMBER .
+    (37) value -> STRING .
 
-    PLUS            reduce using rule 23 (expression -> NUMBER .)
-    MINUS           reduce using rule 23 (expression -> NUMBER .)
-    TIMES           reduce using rule 23 (expression -> NUMBER .)
-    OVER            reduce using rule 23 (expression -> NUMBER .)
-    AND             reduce using rule 23 (expression -> NUMBER .)
-    OR              reduce using rule 23 (expression -> NUMBER .)
-    EQ              reduce using rule 23 (expression -> NUMBER .)
-    GE              reduce using rule 23 (expression -> NUMBER .)
-    LE              reduce using rule 23 (expression -> NUMBER .)
-    GT              reduce using rule 23 (expression -> NUMBER .)
-    LT              reduce using rule 23 (expression -> NUMBER .)
-    ASSIGN_OP_WORD  reduce using rule 23 (expression -> NUMBER .)
-    QUESTION        reduce using rule 23 (expression -> NUMBER .)
-    AMERICA_GREAT   reduce using rule 23 (expression -> NUMBER .)
-    ID              reduce using rule 23 (expression -> NUMBER .)
-    MAKE            reduce using rule 23 (expression -> NUMBER .)
-    PRINT           reduce using rule 23 (expression -> NUMBER .)
-    IF              reduce using rule 23 (expression -> NUMBER .)
-    AS_LONG_AS      reduce using rule 23 (expression -> NUMBER .)
-    RBRACE          reduce using rule 23 (expression -> NUMBER .)
-    LBRACE          reduce using rule 23 (expression -> NUMBER .)
-    RPAREN          reduce using rule 23 (expression -> NUMBER .)
+    AMERICA_GREAT   reduce using rule 37 (value -> STRING .)
+    ID              reduce using rule 37 (value -> STRING .)
+    MAKE            reduce using rule 37 (value -> STRING .)
+    PRINT           reduce using rule 37 (value -> STRING .)
+    IF              reduce using rule 37 (value -> STRING .)
+    AS_LONG_AS      reduce using rule 37 (value -> STRING .)
+    RBRACE          reduce using rule 37 (value -> STRING .)
 
 
 state 22
 
-    (24) expression -> STRING .
+    (38) value -> ID .
 
-    PLUS            reduce using rule 24 (expression -> STRING .)
-    MINUS           reduce using rule 24 (expression -> STRING .)
-    TIMES           reduce using rule 24 (expression -> STRING .)
-    OVER            reduce using rule 24 (expression -> STRING .)
-    AND             reduce using rule 24 (expression -> STRING .)
-    OR              reduce using rule 24 (expression -> STRING .)
-    EQ              reduce using rule 24 (expression -> STRING .)
-    GE              reduce using rule 24 (expression -> STRING .)
-    LE              reduce using rule 24 (expression -> STRING .)
-    GT              reduce using rule 24 (expression -> STRING .)
-    LT              reduce using rule 24 (expression -> STRING .)
-    ASSIGN_OP_WORD  reduce using rule 24 (expression -> STRING .)
-    QUESTION        reduce using rule 24 (expression -> STRING .)
-    AMERICA_GREAT   reduce using rule 24 (expression -> STRING .)
-    ID              reduce using rule 24 (expression -> STRING .)
-    MAKE            reduce using rule 24 (expression -> STRING .)
-    PRINT           reduce using rule 24 (expression -> STRING .)
-    IF              reduce using rule 24 (expression -> STRING .)
-    AS_LONG_AS      reduce using rule 24 (expression -> STRING .)
-    RBRACE          reduce using rule 24 (expression -> STRING .)
-    LBRACE          reduce using rule 24 (expression -> STRING .)
-    RPAREN          reduce using rule 24 (expression -> STRING .)
+    AMERICA_GREAT   reduce using rule 38 (value -> ID .)
+    ID              reduce using rule 38 (value -> ID .)
+    MAKE            reduce using rule 38 (value -> ID .)
+    PRINT           reduce using rule 38 (value -> ID .)
+    IF              reduce using rule 38 (value -> ID .)
+    AS_LONG_AS      reduce using rule 38 (value -> ID .)
+    RBRACE          reduce using rule 38 (value -> ID .)
 
 
 state 23
 
-    (25) expression -> ID .
+    (39) value -> logical_expression .
+    (14) logical_expression -> logical_expression . AND logical_expression
+    (15) logical_expression -> logical_expression . OR logical_expression
 
-    PLUS            reduce using rule 25 (expression -> ID .)
-    MINUS           reduce using rule 25 (expression -> ID .)
-    TIMES           reduce using rule 25 (expression -> ID .)
-    OVER            reduce using rule 25 (expression -> ID .)
-    AND             reduce using rule 25 (expression -> ID .)
-    OR              reduce using rule 25 (expression -> ID .)
-    EQ              reduce using rule 25 (expression -> ID .)
-    GE              reduce using rule 25 (expression -> ID .)
-    LE              reduce using rule 25 (expression -> ID .)
-    GT              reduce using rule 25 (expression -> ID .)
-    LT              reduce using rule 25 (expression -> ID .)
-    ASSIGN_OP_WORD  reduce using rule 25 (expression -> ID .)
-    QUESTION        reduce using rule 25 (expression -> ID .)
-    AMERICA_GREAT   reduce using rule 25 (expression -> ID .)
-    ID              reduce using rule 25 (expression -> ID .)
-    MAKE            reduce using rule 25 (expression -> ID .)
-    PRINT           reduce using rule 25 (expression -> ID .)
-    IF              reduce using rule 25 (expression -> ID .)
-    AS_LONG_AS      reduce using rule 25 (expression -> ID .)
-    RBRACE          reduce using rule 25 (expression -> ID .)
-    LBRACE          reduce using rule 25 (expression -> ID .)
-    RPAREN          reduce using rule 25 (expression -> ID .)
+    AMERICA_GREAT   reduce using rule 39 (value -> logical_expression .)
+    ID              reduce using rule 39 (value -> logical_expression .)
+    MAKE            reduce using rule 39 (value -> logical_expression .)
+    PRINT           reduce using rule 39 (value -> logical_expression .)
+    IF              reduce using rule 39 (value -> logical_expression .)
+    AS_LONG_AS      reduce using rule 39 (value -> logical_expression .)
+    RBRACE          reduce using rule 39 (value -> logical_expression .)
+    AND             shift and go to state 42
+    OR              shift and go to state 43
 
 
 state 24
 
-    (26) expression -> FACT .
+    (9) arithmetic_operation -> NUMBER . PLUS NUMBER
+    (10) arithmetic_operation -> NUMBER . MINUS NUMBER
+    (11) arithmetic_operation -> NUMBER . TIMES NUMBER
+    (12) arithmetic_operation -> NUMBER . OVER NUMBER
+    (13) arithmetic_operation -> NUMBER .
 
-    PLUS            reduce using rule 26 (expression -> FACT .)
-    MINUS           reduce using rule 26 (expression -> FACT .)
-    TIMES           reduce using rule 26 (expression -> FACT .)
-    OVER            reduce using rule 26 (expression -> FACT .)
-    AND             reduce using rule 26 (expression -> FACT .)
-    OR              reduce using rule 26 (expression -> FACT .)
-    EQ              reduce using rule 26 (expression -> FACT .)
-    GE              reduce using rule 26 (expression -> FACT .)
-    LE              reduce using rule 26 (expression -> FACT .)
-    GT              reduce using rule 26 (expression -> FACT .)
-    LT              reduce using rule 26 (expression -> FACT .)
-    ASSIGN_OP_WORD  reduce using rule 26 (expression -> FACT .)
-    QUESTION        reduce using rule 26 (expression -> FACT .)
-    AMERICA_GREAT   reduce using rule 26 (expression -> FACT .)
-    ID              reduce using rule 26 (expression -> FACT .)
-    MAKE            reduce using rule 26 (expression -> FACT .)
-    PRINT           reduce using rule 26 (expression -> FACT .)
-    IF              reduce using rule 26 (expression -> FACT .)
-    AS_LONG_AS      reduce using rule 26 (expression -> FACT .)
-    RBRACE          reduce using rule 26 (expression -> FACT .)
-    LBRACE          reduce using rule 26 (expression -> FACT .)
-    RPAREN          reduce using rule 26 (expression -> FACT .)
+    PLUS            shift and go to state 44
+    MINUS           shift and go to state 45
+    TIMES           shift and go to state 46
+    OVER            shift and go to state 47
+    EQ              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    GE              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    LE              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    GT              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    LT              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    ASSIGN_OP_WORD  reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    AMERICA_GREAT   reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    ID              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    MAKE            reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    PRINT           reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    IF              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    AS_LONG_AS      reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    RBRACE          reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    RPAREN          reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    QUESTION        reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    AND             reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    OR              reduce using rule 13 (arithmetic_operation -> NUMBER .)
+    LBRACE          reduce using rule 13 (arithmetic_operation -> NUMBER .)
 
 
 state 25
 
-    (27) expression -> LIE .
+    (27) arithmetic_operation -> LPAREN . arithmetic_operation RPAREN
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    PLUS            reduce using rule 27 (expression -> LIE .)
-    MINUS           reduce using rule 27 (expression -> LIE .)
-    TIMES           reduce using rule 27 (expression -> LIE .)
-    OVER            reduce using rule 27 (expression -> LIE .)
-    AND             reduce using rule 27 (expression -> LIE .)
-    OR              reduce using rule 27 (expression -> LIE .)
-    EQ              reduce using rule 27 (expression -> LIE .)
-    GE              reduce using rule 27 (expression -> LIE .)
-    LE              reduce using rule 27 (expression -> LIE .)
-    GT              reduce using rule 27 (expression -> LIE .)
-    LT              reduce using rule 27 (expression -> LIE .)
-    ASSIGN_OP_WORD  reduce using rule 27 (expression -> LIE .)
-    QUESTION        reduce using rule 27 (expression -> LIE .)
-    AMERICA_GREAT   reduce using rule 27 (expression -> LIE .)
-    ID              reduce using rule 27 (expression -> LIE .)
-    MAKE            reduce using rule 27 (expression -> LIE .)
-    PRINT           reduce using rule 27 (expression -> LIE .)
-    IF              reduce using rule 27 (expression -> LIE .)
-    AS_LONG_AS      reduce using rule 27 (expression -> LIE .)
-    RBRACE          reduce using rule 27 (expression -> LIE .)
-    LBRACE          reduce using rule 27 (expression -> LIE .)
-    RPAREN          reduce using rule 27 (expression -> LIE .)
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
+    arithmetic_operation           shift and go to state 48
 
 state 26
 
-    (32) if_statement -> IF expression . LBRACE body RBRACE
-    (33) if_statement -> IF expression . LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (16) logical_expression -> comparison .
+    (26) question_expression -> comparison . QUESTION
 
-    LBRACE          shift and go to state 45
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    OR              shift and go to state 36
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
+    AND             reduce using rule 16 (logical_expression -> comparison .)
+    OR              reduce using rule 16 (logical_expression -> comparison .)
+    AMERICA_GREAT   reduce using rule 16 (logical_expression -> comparison .)
+    ID              reduce using rule 16 (logical_expression -> comparison .)
+    MAKE            reduce using rule 16 (logical_expression -> comparison .)
+    PRINT           reduce using rule 16 (logical_expression -> comparison .)
+    IF              reduce using rule 16 (logical_expression -> comparison .)
+    AS_LONG_AS      reduce using rule 16 (logical_expression -> comparison .)
+    RBRACE          reduce using rule 16 (logical_expression -> comparison .)
+    LBRACE          reduce using rule 16 (logical_expression -> comparison .)
+    QUESTION        shift and go to state 49
 
 
 state 27
 
-    (34) loop_statement -> AS_LONG_AS expression . LBRACE body RBRACE
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (17) logical_expression -> question_expression .
 
-    LBRACE          shift and go to state 46
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    OR              shift and go to state 36
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
+    AND             reduce using rule 17 (logical_expression -> question_expression .)
+    OR              reduce using rule 17 (logical_expression -> question_expression .)
+    AMERICA_GREAT   reduce using rule 17 (logical_expression -> question_expression .)
+    ID              reduce using rule 17 (logical_expression -> question_expression .)
+    MAKE            reduce using rule 17 (logical_expression -> question_expression .)
+    PRINT           reduce using rule 17 (logical_expression -> question_expression .)
+    IF              reduce using rule 17 (logical_expression -> question_expression .)
+    AS_LONG_AS      reduce using rule 17 (logical_expression -> question_expression .)
+    RBRACE          reduce using rule 17 (logical_expression -> question_expression .)
+    LBRACE          reduce using rule 17 (logical_expression -> question_expression .)
 
 
 state 28
 
-    (28) assignment -> ID ASSIGN_OP_SIGN expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (18) logical_expression -> FACT .
 
-    AMERICA_GREAT   reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN expression .)
-    ID              reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN expression .)
-    MAKE            reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN expression .)
-    PRINT           reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN expression .)
-    IF              reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN expression .)
-    AS_LONG_AS      reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN expression .)
-    RBRACE          reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    OR              shift and go to state 36
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
+    AND             reduce using rule 18 (logical_expression -> FACT .)
+    OR              reduce using rule 18 (logical_expression -> FACT .)
+    AMERICA_GREAT   reduce using rule 18 (logical_expression -> FACT .)
+    ID              reduce using rule 18 (logical_expression -> FACT .)
+    MAKE            reduce using rule 18 (logical_expression -> FACT .)
+    PRINT           reduce using rule 18 (logical_expression -> FACT .)
+    IF              reduce using rule 18 (logical_expression -> FACT .)
+    AS_LONG_AS      reduce using rule 18 (logical_expression -> FACT .)
+    RBRACE          reduce using rule 18 (logical_expression -> FACT .)
+    LBRACE          reduce using rule 18 (logical_expression -> FACT .)
 
 
 state 29
 
-    (29) assignment -> ID ASSIGN_OP_WORD expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (19) logical_expression -> LIE .
 
-    AMERICA_GREAT   reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD expression .)
-    ID              reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD expression .)
-    MAKE            reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD expression .)
-    PRINT           reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD expression .)
-    IF              reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD expression .)
-    AS_LONG_AS      reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD expression .)
-    RBRACE          reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    OR              shift and go to state 36
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
+    AND             reduce using rule 19 (logical_expression -> LIE .)
+    OR              reduce using rule 19 (logical_expression -> LIE .)
+    AMERICA_GREAT   reduce using rule 19 (logical_expression -> LIE .)
+    ID              reduce using rule 19 (logical_expression -> LIE .)
+    MAKE            reduce using rule 19 (logical_expression -> LIE .)
+    PRINT           reduce using rule 19 (logical_expression -> LIE .)
+    IF              reduce using rule 19 (logical_expression -> LIE .)
+    AS_LONG_AS      reduce using rule 19 (logical_expression -> LIE .)
+    RBRACE          reduce using rule 19 (logical_expression -> LIE .)
+    LBRACE          reduce using rule 19 (logical_expression -> LIE .)
 
 
 state 30
 
-    (30) assignment -> MAKE ID expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (32) if_statement -> IF logical_expression . LBRACE body RBRACE
+    (33) if_statement -> IF logical_expression . LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> IF logical_expression . LBRACE body RBRACE ELSE if_statement
+    (14) logical_expression -> logical_expression . AND logical_expression
+    (15) logical_expression -> logical_expression . OR logical_expression
 
-    AMERICA_GREAT   reduce using rule 30 (assignment -> MAKE ID expression .)
-    ID              reduce using rule 30 (assignment -> MAKE ID expression .)
-    MAKE            reduce using rule 30 (assignment -> MAKE ID expression .)
-    PRINT           reduce using rule 30 (assignment -> MAKE ID expression .)
-    IF              reduce using rule 30 (assignment -> MAKE ID expression .)
-    AS_LONG_AS      reduce using rule 30 (assignment -> MAKE ID expression .)
-    RBRACE          reduce using rule 30 (assignment -> MAKE ID expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    OR              shift and go to state 36
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
+    LBRACE          shift and go to state 50
+    AND             shift and go to state 42
+    OR              shift and go to state 43
 
 
 state 31
 
-    (9) expression -> expression PLUS . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (20) comparison -> arithmetic_operation . EQ arithmetic_operation
+    (21) comparison -> arithmetic_operation . GE arithmetic_operation
+    (22) comparison -> arithmetic_operation . LE arithmetic_operation
+    (23) comparison -> arithmetic_operation . GT arithmetic_operation
+    (24) comparison -> arithmetic_operation . LT arithmetic_operation
+    (25) comparison -> arithmetic_operation . ASSIGN_OP_WORD arithmetic_operation
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    EQ              shift and go to state 36
+    GE              shift and go to state 37
+    LE              shift and go to state 38
+    GT              shift and go to state 39
+    LT              shift and go to state 40
+    ASSIGN_OP_WORD  shift and go to state 41
 
-    expression                     shift and go to state 47
 
 state 32
 
-    (10) expression -> expression MINUS . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (35) loop_statement -> AS_LONG_AS logical_expression . LBRACE body RBRACE
+    (14) logical_expression -> logical_expression . AND logical_expression
+    (15) logical_expression -> logical_expression . OR logical_expression
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    LBRACE          shift and go to state 51
+    AND             shift and go to state 42
+    OR              shift and go to state 43
 
-    expression                     shift and go to state 48
 
 state 33
 
-    (11) expression -> expression TIMES . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (28) assignment -> ID ASSIGN_OP_SIGN value .
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    AMERICA_GREAT   reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN value .)
+    ID              reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN value .)
+    MAKE            reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN value .)
+    PRINT           reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN value .)
+    IF              reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN value .)
+    AS_LONG_AS      reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN value .)
+    RBRACE          reduce using rule 28 (assignment -> ID ASSIGN_OP_SIGN value .)
 
-    expression                     shift and go to state 49
 
 state 34
 
-    (12) expression -> expression OVER . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (29) assignment -> ID ASSIGN_OP_WORD value .
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    AMERICA_GREAT   reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD value .)
+    ID              reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD value .)
+    MAKE            reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD value .)
+    PRINT           reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD value .)
+    IF              reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD value .)
+    AS_LONG_AS      reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD value .)
+    RBRACE          reduce using rule 29 (assignment -> ID ASSIGN_OP_WORD value .)
 
-    expression                     shift and go to state 50
 
 state 35
 
-    (13) expression -> expression AND . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (30) assignment -> MAKE ID value .
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    AMERICA_GREAT   reduce using rule 30 (assignment -> MAKE ID value .)
+    ID              reduce using rule 30 (assignment -> MAKE ID value .)
+    MAKE            reduce using rule 30 (assignment -> MAKE ID value .)
+    PRINT           reduce using rule 30 (assignment -> MAKE ID value .)
+    IF              reduce using rule 30 (assignment -> MAKE ID value .)
+    AS_LONG_AS      reduce using rule 30 (assignment -> MAKE ID value .)
+    RBRACE          reduce using rule 30 (assignment -> MAKE ID value .)
 
-    expression                     shift and go to state 51
 
 state 36
 
-    (14) expression -> expression OR . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (20) comparison -> arithmetic_operation EQ . arithmetic_operation
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 52
+    arithmetic_operation           shift and go to state 52
 
 state 37
 
-    (15) expression -> expression EQ . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (21) comparison -> arithmetic_operation GE . arithmetic_operation
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 53
+    arithmetic_operation           shift and go to state 53
 
 state 38
 
-    (16) expression -> expression GE . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (22) comparison -> arithmetic_operation LE . arithmetic_operation
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 54
+    arithmetic_operation           shift and go to state 54
 
 state 39
 
-    (17) expression -> expression LE . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (23) comparison -> arithmetic_operation GT . arithmetic_operation
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 55
+    arithmetic_operation           shift and go to state 55
 
 state 40
 
-    (18) expression -> expression GT . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (24) comparison -> arithmetic_operation LT . arithmetic_operation
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 56
+    arithmetic_operation           shift and go to state 56
 
 state 41
 
-    (19) expression -> expression LT . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (25) comparison -> arithmetic_operation ASSIGN_OP_WORD . arithmetic_operation
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 57
+    arithmetic_operation           shift and go to state 57
 
 state 42
 
-    (20) expression -> expression ASSIGN_OP_WORD . expression
-    (9) expression -> . expression PLUS expression
-    (10) expression -> . expression MINUS expression
-    (11) expression -> . expression TIMES expression
-    (12) expression -> . expression OVER expression
-    (13) expression -> . expression AND expression
-    (14) expression -> . expression OR expression
-    (15) expression -> . expression EQ expression
-    (16) expression -> . expression GE expression
-    (17) expression -> . expression LE expression
-    (18) expression -> . expression GT expression
-    (19) expression -> . expression LT expression
-    (20) expression -> . expression ASSIGN_OP_WORD expression
-    (21) expression -> . expression QUESTION
-    (22) expression -> . LPAREN expression RPAREN
-    (23) expression -> . NUMBER
-    (24) expression -> . STRING
-    (25) expression -> . ID
-    (26) expression -> . FACT
-    (27) expression -> . LIE
+    (14) logical_expression -> logical_expression AND . logical_expression
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    LPAREN          shift and go to state 20
-    NUMBER          shift and go to state 21
-    STRING          shift and go to state 22
-    ID              shift and go to state 23
-    FACT            shift and go to state 24
-    LIE             shift and go to state 25
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    expression                     shift and go to state 58
+    logical_expression             shift and go to state 58
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
+    arithmetic_operation           shift and go to state 31
 
 state 43
 
-    (21) expression -> expression QUESTION .
+    (15) logical_expression -> logical_expression OR . logical_expression
+    (14) logical_expression -> . logical_expression AND logical_expression
+    (15) logical_expression -> . logical_expression OR logical_expression
+    (16) logical_expression -> . comparison
+    (17) logical_expression -> . question_expression
+    (18) logical_expression -> . FACT
+    (19) logical_expression -> . LIE
+    (20) comparison -> . arithmetic_operation EQ arithmetic_operation
+    (21) comparison -> . arithmetic_operation GE arithmetic_operation
+    (22) comparison -> . arithmetic_operation LE arithmetic_operation
+    (23) comparison -> . arithmetic_operation GT arithmetic_operation
+    (24) comparison -> . arithmetic_operation LT arithmetic_operation
+    (25) comparison -> . arithmetic_operation ASSIGN_OP_WORD arithmetic_operation
+    (26) question_expression -> . comparison QUESTION
+    (9) arithmetic_operation -> . NUMBER PLUS NUMBER
+    (10) arithmetic_operation -> . NUMBER MINUS NUMBER
+    (11) arithmetic_operation -> . NUMBER TIMES NUMBER
+    (12) arithmetic_operation -> . NUMBER OVER NUMBER
+    (13) arithmetic_operation -> . NUMBER
+    (27) arithmetic_operation -> . LPAREN arithmetic_operation RPAREN
 
-    PLUS            reduce using rule 21 (expression -> expression QUESTION .)
-    MINUS           reduce using rule 21 (expression -> expression QUESTION .)
-    TIMES           reduce using rule 21 (expression -> expression QUESTION .)
-    OVER            reduce using rule 21 (expression -> expression QUESTION .)
-    AND             reduce using rule 21 (expression -> expression QUESTION .)
-    OR              reduce using rule 21 (expression -> expression QUESTION .)
-    EQ              reduce using rule 21 (expression -> expression QUESTION .)
-    GE              reduce using rule 21 (expression -> expression QUESTION .)
-    LE              reduce using rule 21 (expression -> expression QUESTION .)
-    GT              reduce using rule 21 (expression -> expression QUESTION .)
-    LT              reduce using rule 21 (expression -> expression QUESTION .)
-    ASSIGN_OP_WORD  reduce using rule 21 (expression -> expression QUESTION .)
-    QUESTION        reduce using rule 21 (expression -> expression QUESTION .)
-    AMERICA_GREAT   reduce using rule 21 (expression -> expression QUESTION .)
-    ID              reduce using rule 21 (expression -> expression QUESTION .)
-    MAKE            reduce using rule 21 (expression -> expression QUESTION .)
-    PRINT           reduce using rule 21 (expression -> expression QUESTION .)
-    IF              reduce using rule 21 (expression -> expression QUESTION .)
-    AS_LONG_AS      reduce using rule 21 (expression -> expression QUESTION .)
-    RBRACE          reduce using rule 21 (expression -> expression QUESTION .)
-    LBRACE          reduce using rule 21 (expression -> expression QUESTION .)
-    RPAREN          reduce using rule 21 (expression -> expression QUESTION .)
+    FACT            shift and go to state 28
+    LIE             shift and go to state 29
+    NUMBER          shift and go to state 24
+    LPAREN          shift and go to state 25
 
+    logical_expression             shift and go to state 59
+    comparison                     shift and go to state 26
+    question_expression            shift and go to state 27
+    arithmetic_operation           shift and go to state 31
 
 state 44
 
-    (22) expression -> LPAREN expression . RPAREN
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (9) arithmetic_operation -> NUMBER PLUS . NUMBER
 
-    RPAREN          shift and go to state 59
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    OR              shift and go to state 36
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
+    NUMBER          shift and go to state 60
 
 
 state 45
 
-    (32) if_statement -> IF expression LBRACE . body RBRACE
-    (33) if_statement -> IF expression LBRACE . body RBRACE ELSE LBRACE body RBRACE
-    (3) body -> . statement
-    (4) body -> . body statement
-    (5) statement -> . assignment
-    (6) statement -> . print_statement
-    (7) statement -> . if_statement
-    (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
+    (10) arithmetic_operation -> NUMBER MINUS . NUMBER
 
-    ID              shift and go to state 9
-    MAKE            shift and go to state 10
-    PRINT           shift and go to state 11
-    IF              shift and go to state 12
-    AS_LONG_AS      shift and go to state 13
+    NUMBER          shift and go to state 61
 
-    body                           shift and go to state 60
-    statement                      shift and go to state 4
-    assignment                     shift and go to state 5
-    print_statement                shift and go to state 6
-    if_statement                   shift and go to state 7
-    loop_statement                 shift and go to state 8
 
 state 46
 
-    (34) loop_statement -> AS_LONG_AS expression LBRACE . body RBRACE
-    (3) body -> . statement
-    (4) body -> . body statement
-    (5) statement -> . assignment
-    (6) statement -> . print_statement
-    (7) statement -> . if_statement
-    (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
+    (11) arithmetic_operation -> NUMBER TIMES . NUMBER
 
-    ID              shift and go to state 9
-    MAKE            shift and go to state 10
-    PRINT           shift and go to state 11
-    IF              shift and go to state 12
-    AS_LONG_AS      shift and go to state 13
+    NUMBER          shift and go to state 62
 
-    body                           shift and go to state 61
-    statement                      shift and go to state 4
-    assignment                     shift and go to state 5
-    print_statement                shift and go to state 6
-    if_statement                   shift and go to state 7
-    loop_statement                 shift and go to state 8
 
 state 47
 
-    (9) expression -> expression PLUS expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (12) arithmetic_operation -> NUMBER OVER . NUMBER
 
-    PLUS            reduce using rule 9 (expression -> expression PLUS expression .)
-    MINUS           reduce using rule 9 (expression -> expression PLUS expression .)
-    AND             reduce using rule 9 (expression -> expression PLUS expression .)
-    OR              reduce using rule 9 (expression -> expression PLUS expression .)
-    EQ              reduce using rule 9 (expression -> expression PLUS expression .)
-    GE              reduce using rule 9 (expression -> expression PLUS expression .)
-    LE              reduce using rule 9 (expression -> expression PLUS expression .)
-    GT              reduce using rule 9 (expression -> expression PLUS expression .)
-    LT              reduce using rule 9 (expression -> expression PLUS expression .)
-    ASSIGN_OP_WORD  reduce using rule 9 (expression -> expression PLUS expression .)
-    QUESTION        reduce using rule 9 (expression -> expression PLUS expression .)
-    AMERICA_GREAT   reduce using rule 9 (expression -> expression PLUS expression .)
-    ID              reduce using rule 9 (expression -> expression PLUS expression .)
-    MAKE            reduce using rule 9 (expression -> expression PLUS expression .)
-    PRINT           reduce using rule 9 (expression -> expression PLUS expression .)
-    IF              reduce using rule 9 (expression -> expression PLUS expression .)
-    AS_LONG_AS      reduce using rule 9 (expression -> expression PLUS expression .)
-    RBRACE          reduce using rule 9 (expression -> expression PLUS expression .)
-    LBRACE          reduce using rule 9 (expression -> expression PLUS expression .)
-    RPAREN          reduce using rule 9 (expression -> expression PLUS expression .)
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! TIMES           [ reduce using rule 9 (expression -> expression PLUS expression .) ]
-  ! OVER            [ reduce using rule 9 (expression -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 31 ]
-  ! MINUS           [ shift and go to state 32 ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
+    NUMBER          shift and go to state 63
 
 
 state 48
 
-    (10) expression -> expression MINUS expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (27) arithmetic_operation -> LPAREN arithmetic_operation . RPAREN
 
-    PLUS            reduce using rule 10 (expression -> expression MINUS expression .)
-    MINUS           reduce using rule 10 (expression -> expression MINUS expression .)
-    AND             reduce using rule 10 (expression -> expression MINUS expression .)
-    OR              reduce using rule 10 (expression -> expression MINUS expression .)
-    EQ              reduce using rule 10 (expression -> expression MINUS expression .)
-    GE              reduce using rule 10 (expression -> expression MINUS expression .)
-    LE              reduce using rule 10 (expression -> expression MINUS expression .)
-    GT              reduce using rule 10 (expression -> expression MINUS expression .)
-    LT              reduce using rule 10 (expression -> expression MINUS expression .)
-    ASSIGN_OP_WORD  reduce using rule 10 (expression -> expression MINUS expression .)
-    QUESTION        reduce using rule 10 (expression -> expression MINUS expression .)
-    AMERICA_GREAT   reduce using rule 10 (expression -> expression MINUS expression .)
-    ID              reduce using rule 10 (expression -> expression MINUS expression .)
-    MAKE            reduce using rule 10 (expression -> expression MINUS expression .)
-    PRINT           reduce using rule 10 (expression -> expression MINUS expression .)
-    IF              reduce using rule 10 (expression -> expression MINUS expression .)
-    AS_LONG_AS      reduce using rule 10 (expression -> expression MINUS expression .)
-    RBRACE          reduce using rule 10 (expression -> expression MINUS expression .)
-    LBRACE          reduce using rule 10 (expression -> expression MINUS expression .)
-    RPAREN          reduce using rule 10 (expression -> expression MINUS expression .)
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! TIMES           [ reduce using rule 10 (expression -> expression MINUS expression .) ]
-  ! OVER            [ reduce using rule 10 (expression -> expression MINUS expression .) ]
-  ! PLUS            [ shift and go to state 31 ]
-  ! MINUS           [ shift and go to state 32 ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
+    RPAREN          shift and go to state 64
 
 
 state 49
 
-    (11) expression -> expression TIMES expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
+    (26) question_expression -> comparison QUESTION .
 
-    PLUS            reduce using rule 11 (expression -> expression TIMES expression .)
-    MINUS           reduce using rule 11 (expression -> expression TIMES expression .)
-    TIMES           reduce using rule 11 (expression -> expression TIMES expression .)
-    OVER            reduce using rule 11 (expression -> expression TIMES expression .)
-    AND             reduce using rule 11 (expression -> expression TIMES expression .)
-    OR              reduce using rule 11 (expression -> expression TIMES expression .)
-    EQ              reduce using rule 11 (expression -> expression TIMES expression .)
-    GE              reduce using rule 11 (expression -> expression TIMES expression .)
-    LE              reduce using rule 11 (expression -> expression TIMES expression .)
-    GT              reduce using rule 11 (expression -> expression TIMES expression .)
-    LT              reduce using rule 11 (expression -> expression TIMES expression .)
-    ASSIGN_OP_WORD  reduce using rule 11 (expression -> expression TIMES expression .)
-    QUESTION        reduce using rule 11 (expression -> expression TIMES expression .)
-    AMERICA_GREAT   reduce using rule 11 (expression -> expression TIMES expression .)
-    ID              reduce using rule 11 (expression -> expression TIMES expression .)
-    MAKE            reduce using rule 11 (expression -> expression TIMES expression .)
-    PRINT           reduce using rule 11 (expression -> expression TIMES expression .)
-    IF              reduce using rule 11 (expression -> expression TIMES expression .)
-    AS_LONG_AS      reduce using rule 11 (expression -> expression TIMES expression .)
-    RBRACE          reduce using rule 11 (expression -> expression TIMES expression .)
-    LBRACE          reduce using rule 11 (expression -> expression TIMES expression .)
-    RPAREN          reduce using rule 11 (expression -> expression TIMES expression .)
-
-  ! PLUS            [ shift and go to state 31 ]
-  ! MINUS           [ shift and go to state 32 ]
-  ! TIMES           [ shift and go to state 33 ]
-  ! OVER            [ shift and go to state 34 ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
+    AND             reduce using rule 26 (question_expression -> comparison QUESTION .)
+    OR              reduce using rule 26 (question_expression -> comparison QUESTION .)
+    AMERICA_GREAT   reduce using rule 26 (question_expression -> comparison QUESTION .)
+    ID              reduce using rule 26 (question_expression -> comparison QUESTION .)
+    MAKE            reduce using rule 26 (question_expression -> comparison QUESTION .)
+    PRINT           reduce using rule 26 (question_expression -> comparison QUESTION .)
+    IF              reduce using rule 26 (question_expression -> comparison QUESTION .)
+    AS_LONG_AS      reduce using rule 26 (question_expression -> comparison QUESTION .)
+    RBRACE          reduce using rule 26 (question_expression -> comparison QUESTION .)
+    LBRACE          reduce using rule 26 (question_expression -> comparison QUESTION .)
 
 
 state 50
 
-    (12) expression -> expression OVER expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    PLUS            reduce using rule 12 (expression -> expression OVER expression .)
-    MINUS           reduce using rule 12 (expression -> expression OVER expression .)
-    TIMES           reduce using rule 12 (expression -> expression OVER expression .)
-    OVER            reduce using rule 12 (expression -> expression OVER expression .)
-    AND             reduce using rule 12 (expression -> expression OVER expression .)
-    OR              reduce using rule 12 (expression -> expression OVER expression .)
-    EQ              reduce using rule 12 (expression -> expression OVER expression .)
-    GE              reduce using rule 12 (expression -> expression OVER expression .)
-    LE              reduce using rule 12 (expression -> expression OVER expression .)
-    GT              reduce using rule 12 (expression -> expression OVER expression .)
-    LT              reduce using rule 12 (expression -> expression OVER expression .)
-    ASSIGN_OP_WORD  reduce using rule 12 (expression -> expression OVER expression .)
-    QUESTION        reduce using rule 12 (expression -> expression OVER expression .)
-    AMERICA_GREAT   reduce using rule 12 (expression -> expression OVER expression .)
-    ID              reduce using rule 12 (expression -> expression OVER expression .)
-    MAKE            reduce using rule 12 (expression -> expression OVER expression .)
-    PRINT           reduce using rule 12 (expression -> expression OVER expression .)
-    IF              reduce using rule 12 (expression -> expression OVER expression .)
-    AS_LONG_AS      reduce using rule 12 (expression -> expression OVER expression .)
-    RBRACE          reduce using rule 12 (expression -> expression OVER expression .)
-    LBRACE          reduce using rule 12 (expression -> expression OVER expression .)
-    RPAREN          reduce using rule 12 (expression -> expression OVER expression .)
-
-  ! PLUS            [ shift and go to state 31 ]
-  ! MINUS           [ shift and go to state 32 ]
-  ! TIMES           [ shift and go to state 33 ]
-  ! OVER            [ shift and go to state 34 ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
-
-
-state 51
-
-    (13) expression -> expression AND expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    AND             reduce using rule 13 (expression -> expression AND expression .)
-    OR              reduce using rule 13 (expression -> expression AND expression .)
-    AMERICA_GREAT   reduce using rule 13 (expression -> expression AND expression .)
-    ID              reduce using rule 13 (expression -> expression AND expression .)
-    MAKE            reduce using rule 13 (expression -> expression AND expression .)
-    PRINT           reduce using rule 13 (expression -> expression AND expression .)
-    IF              reduce using rule 13 (expression -> expression AND expression .)
-    AS_LONG_AS      reduce using rule 13 (expression -> expression AND expression .)
-    RBRACE          reduce using rule 13 (expression -> expression AND expression .)
-    LBRACE          reduce using rule 13 (expression -> expression AND expression .)
-    RPAREN          reduce using rule 13 (expression -> expression AND expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
-
-  ! PLUS            [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! MINUS           [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! TIMES           [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! OVER            [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! EQ              [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! GE              [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! LE              [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! GT              [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! LT              [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! ASSIGN_OP_WORD  [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! QUESTION        [ reduce using rule 13 (expression -> expression AND expression .) ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-
-
-state 52
-
-    (14) expression -> expression OR expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    OR              reduce using rule 14 (expression -> expression OR expression .)
-    AMERICA_GREAT   reduce using rule 14 (expression -> expression OR expression .)
-    ID              reduce using rule 14 (expression -> expression OR expression .)
-    MAKE            reduce using rule 14 (expression -> expression OR expression .)
-    PRINT           reduce using rule 14 (expression -> expression OR expression .)
-    IF              reduce using rule 14 (expression -> expression OR expression .)
-    AS_LONG_AS      reduce using rule 14 (expression -> expression OR expression .)
-    RBRACE          reduce using rule 14 (expression -> expression OR expression .)
-    LBRACE          reduce using rule 14 (expression -> expression OR expression .)
-    RPAREN          reduce using rule 14 (expression -> expression OR expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-    AND             shift and go to state 35
-    EQ              shift and go to state 37
-    GE              shift and go to state 38
-    LE              shift and go to state 39
-    GT              shift and go to state 40
-    LT              shift and go to state 41
-    ASSIGN_OP_WORD  shift and go to state 42
-    QUESTION        shift and go to state 43
-
-  ! PLUS            [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! MINUS           [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! TIMES           [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! OVER            [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! AND             [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! EQ              [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! GE              [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! LE              [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! GT              [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! LT              [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! ASSIGN_OP_WORD  [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! QUESTION        [ reduce using rule 14 (expression -> expression OR expression .) ]
-  ! OR              [ shift and go to state 36 ]
-
-
-state 53
-
-    (15) expression -> expression EQ expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    AND             reduce using rule 15 (expression -> expression EQ expression .)
-    OR              reduce using rule 15 (expression -> expression EQ expression .)
-    EQ              reduce using rule 15 (expression -> expression EQ expression .)
-    GE              reduce using rule 15 (expression -> expression EQ expression .)
-    LE              reduce using rule 15 (expression -> expression EQ expression .)
-    GT              reduce using rule 15 (expression -> expression EQ expression .)
-    LT              reduce using rule 15 (expression -> expression EQ expression .)
-    ASSIGN_OP_WORD  reduce using rule 15 (expression -> expression EQ expression .)
-    QUESTION        reduce using rule 15 (expression -> expression EQ expression .)
-    AMERICA_GREAT   reduce using rule 15 (expression -> expression EQ expression .)
-    ID              reduce using rule 15 (expression -> expression EQ expression .)
-    MAKE            reduce using rule 15 (expression -> expression EQ expression .)
-    PRINT           reduce using rule 15 (expression -> expression EQ expression .)
-    IF              reduce using rule 15 (expression -> expression EQ expression .)
-    AS_LONG_AS      reduce using rule 15 (expression -> expression EQ expression .)
-    RBRACE          reduce using rule 15 (expression -> expression EQ expression .)
-    LBRACE          reduce using rule 15 (expression -> expression EQ expression .)
-    RPAREN          reduce using rule 15 (expression -> expression EQ expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! PLUS            [ reduce using rule 15 (expression -> expression EQ expression .) ]
-  ! MINUS           [ reduce using rule 15 (expression -> expression EQ expression .) ]
-  ! TIMES           [ reduce using rule 15 (expression -> expression EQ expression .) ]
-  ! OVER            [ reduce using rule 15 (expression -> expression EQ expression .) ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
-
-
-state 54
-
-    (16) expression -> expression GE expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    AND             reduce using rule 16 (expression -> expression GE expression .)
-    OR              reduce using rule 16 (expression -> expression GE expression .)
-    EQ              reduce using rule 16 (expression -> expression GE expression .)
-    GE              reduce using rule 16 (expression -> expression GE expression .)
-    LE              reduce using rule 16 (expression -> expression GE expression .)
-    GT              reduce using rule 16 (expression -> expression GE expression .)
-    LT              reduce using rule 16 (expression -> expression GE expression .)
-    ASSIGN_OP_WORD  reduce using rule 16 (expression -> expression GE expression .)
-    QUESTION        reduce using rule 16 (expression -> expression GE expression .)
-    AMERICA_GREAT   reduce using rule 16 (expression -> expression GE expression .)
-    ID              reduce using rule 16 (expression -> expression GE expression .)
-    MAKE            reduce using rule 16 (expression -> expression GE expression .)
-    PRINT           reduce using rule 16 (expression -> expression GE expression .)
-    IF              reduce using rule 16 (expression -> expression GE expression .)
-    AS_LONG_AS      reduce using rule 16 (expression -> expression GE expression .)
-    RBRACE          reduce using rule 16 (expression -> expression GE expression .)
-    LBRACE          reduce using rule 16 (expression -> expression GE expression .)
-    RPAREN          reduce using rule 16 (expression -> expression GE expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! PLUS            [ reduce using rule 16 (expression -> expression GE expression .) ]
-  ! MINUS           [ reduce using rule 16 (expression -> expression GE expression .) ]
-  ! TIMES           [ reduce using rule 16 (expression -> expression GE expression .) ]
-  ! OVER            [ reduce using rule 16 (expression -> expression GE expression .) ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
-
-
-state 55
-
-    (17) expression -> expression LE expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    AND             reduce using rule 17 (expression -> expression LE expression .)
-    OR              reduce using rule 17 (expression -> expression LE expression .)
-    EQ              reduce using rule 17 (expression -> expression LE expression .)
-    GE              reduce using rule 17 (expression -> expression LE expression .)
-    LE              reduce using rule 17 (expression -> expression LE expression .)
-    GT              reduce using rule 17 (expression -> expression LE expression .)
-    LT              reduce using rule 17 (expression -> expression LE expression .)
-    ASSIGN_OP_WORD  reduce using rule 17 (expression -> expression LE expression .)
-    QUESTION        reduce using rule 17 (expression -> expression LE expression .)
-    AMERICA_GREAT   reduce using rule 17 (expression -> expression LE expression .)
-    ID              reduce using rule 17 (expression -> expression LE expression .)
-    MAKE            reduce using rule 17 (expression -> expression LE expression .)
-    PRINT           reduce using rule 17 (expression -> expression LE expression .)
-    IF              reduce using rule 17 (expression -> expression LE expression .)
-    AS_LONG_AS      reduce using rule 17 (expression -> expression LE expression .)
-    RBRACE          reduce using rule 17 (expression -> expression LE expression .)
-    LBRACE          reduce using rule 17 (expression -> expression LE expression .)
-    RPAREN          reduce using rule 17 (expression -> expression LE expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! PLUS            [ reduce using rule 17 (expression -> expression LE expression .) ]
-  ! MINUS           [ reduce using rule 17 (expression -> expression LE expression .) ]
-  ! TIMES           [ reduce using rule 17 (expression -> expression LE expression .) ]
-  ! OVER            [ reduce using rule 17 (expression -> expression LE expression .) ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
-
-
-state 56
-
-    (18) expression -> expression GT expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    AND             reduce using rule 18 (expression -> expression GT expression .)
-    OR              reduce using rule 18 (expression -> expression GT expression .)
-    EQ              reduce using rule 18 (expression -> expression GT expression .)
-    GE              reduce using rule 18 (expression -> expression GT expression .)
-    LE              reduce using rule 18 (expression -> expression GT expression .)
-    GT              reduce using rule 18 (expression -> expression GT expression .)
-    LT              reduce using rule 18 (expression -> expression GT expression .)
-    ASSIGN_OP_WORD  reduce using rule 18 (expression -> expression GT expression .)
-    QUESTION        reduce using rule 18 (expression -> expression GT expression .)
-    AMERICA_GREAT   reduce using rule 18 (expression -> expression GT expression .)
-    ID              reduce using rule 18 (expression -> expression GT expression .)
-    MAKE            reduce using rule 18 (expression -> expression GT expression .)
-    PRINT           reduce using rule 18 (expression -> expression GT expression .)
-    IF              reduce using rule 18 (expression -> expression GT expression .)
-    AS_LONG_AS      reduce using rule 18 (expression -> expression GT expression .)
-    RBRACE          reduce using rule 18 (expression -> expression GT expression .)
-    LBRACE          reduce using rule 18 (expression -> expression GT expression .)
-    RPAREN          reduce using rule 18 (expression -> expression GT expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! PLUS            [ reduce using rule 18 (expression -> expression GT expression .) ]
-  ! MINUS           [ reduce using rule 18 (expression -> expression GT expression .) ]
-  ! TIMES           [ reduce using rule 18 (expression -> expression GT expression .) ]
-  ! OVER            [ reduce using rule 18 (expression -> expression GT expression .) ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
-
-
-state 57
-
-    (19) expression -> expression LT expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    AND             reduce using rule 19 (expression -> expression LT expression .)
-    OR              reduce using rule 19 (expression -> expression LT expression .)
-    EQ              reduce using rule 19 (expression -> expression LT expression .)
-    GE              reduce using rule 19 (expression -> expression LT expression .)
-    LE              reduce using rule 19 (expression -> expression LT expression .)
-    GT              reduce using rule 19 (expression -> expression LT expression .)
-    LT              reduce using rule 19 (expression -> expression LT expression .)
-    ASSIGN_OP_WORD  reduce using rule 19 (expression -> expression LT expression .)
-    QUESTION        reduce using rule 19 (expression -> expression LT expression .)
-    AMERICA_GREAT   reduce using rule 19 (expression -> expression LT expression .)
-    ID              reduce using rule 19 (expression -> expression LT expression .)
-    MAKE            reduce using rule 19 (expression -> expression LT expression .)
-    PRINT           reduce using rule 19 (expression -> expression LT expression .)
-    IF              reduce using rule 19 (expression -> expression LT expression .)
-    AS_LONG_AS      reduce using rule 19 (expression -> expression LT expression .)
-    RBRACE          reduce using rule 19 (expression -> expression LT expression .)
-    LBRACE          reduce using rule 19 (expression -> expression LT expression .)
-    RPAREN          reduce using rule 19 (expression -> expression LT expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! PLUS            [ reduce using rule 19 (expression -> expression LT expression .) ]
-  ! MINUS           [ reduce using rule 19 (expression -> expression LT expression .) ]
-  ! TIMES           [ reduce using rule 19 (expression -> expression LT expression .) ]
-  ! OVER            [ reduce using rule 19 (expression -> expression LT expression .) ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
-
-
-state 58
-
-    (20) expression -> expression ASSIGN_OP_WORD expression .
-    (9) expression -> expression . PLUS expression
-    (10) expression -> expression . MINUS expression
-    (11) expression -> expression . TIMES expression
-    (12) expression -> expression . OVER expression
-    (13) expression -> expression . AND expression
-    (14) expression -> expression . OR expression
-    (15) expression -> expression . EQ expression
-    (16) expression -> expression . GE expression
-    (17) expression -> expression . LE expression
-    (18) expression -> expression . GT expression
-    (19) expression -> expression . LT expression
-    (20) expression -> expression . ASSIGN_OP_WORD expression
-    (21) expression -> expression . QUESTION
-
-    AND             reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    OR              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    EQ              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    GE              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    LE              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    GT              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    LT              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    ASSIGN_OP_WORD  reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    QUESTION        reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    AMERICA_GREAT   reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    ID              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    MAKE            reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    PRINT           reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    IF              reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    AS_LONG_AS      reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    RBRACE          reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    LBRACE          reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    RPAREN          reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .)
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
-    TIMES           shift and go to state 33
-    OVER            shift and go to state 34
-
-  ! PLUS            [ reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .) ]
-  ! MINUS           [ reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .) ]
-  ! TIMES           [ reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .) ]
-  ! OVER            [ reduce using rule 20 (expression -> expression ASSIGN_OP_WORD expression .) ]
-  ! AND             [ shift and go to state 35 ]
-  ! OR              [ shift and go to state 36 ]
-  ! EQ              [ shift and go to state 37 ]
-  ! GE              [ shift and go to state 38 ]
-  ! LE              [ shift and go to state 39 ]
-  ! GT              [ shift and go to state 40 ]
-  ! LT              [ shift and go to state 41 ]
-  ! ASSIGN_OP_WORD  [ shift and go to state 42 ]
-  ! QUESTION        [ shift and go to state 43 ]
-
-
-state 59
-
-    (22) expression -> LPAREN expression RPAREN .
-
-    PLUS            reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    TIMES           reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    OVER            reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    AND             reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    OR              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    EQ              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    GE              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    LE              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    GT              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    LT              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    ASSIGN_OP_WORD  reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    QUESTION        reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    AMERICA_GREAT   reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    ID              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    MAKE            reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    PRINT           reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    IF              reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    AS_LONG_AS      reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    RBRACE          reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    LBRACE          reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 22 (expression -> LPAREN expression RPAREN .)
-
-
-state 60
-
-    (32) if_statement -> IF expression LBRACE body . RBRACE
-    (33) if_statement -> IF expression LBRACE body . RBRACE ELSE LBRACE body RBRACE
-    (4) body -> body . statement
-    (5) statement -> . assignment
-    (6) statement -> . print_statement
-    (7) statement -> . if_statement
-    (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
-
-    RBRACE          shift and go to state 62
-    ID              shift and go to state 9
-    MAKE            shift and go to state 10
-    PRINT           shift and go to state 11
-    IF              shift and go to state 12
-    AS_LONG_AS      shift and go to state 13
-
-    statement                      shift and go to state 15
-    assignment                     shift and go to state 5
-    print_statement                shift and go to state 6
-    if_statement                   shift and go to state 7
-    loop_statement                 shift and go to state 8
-
-state 61
-
-    (34) loop_statement -> AS_LONG_AS expression LBRACE body . RBRACE
-    (4) body -> body . statement
-    (5) statement -> . assignment
-    (6) statement -> . print_statement
-    (7) statement -> . if_statement
-    (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
-
-    RBRACE          shift and go to state 63
-    ID              shift and go to state 9
-    MAKE            shift and go to state 10
-    PRINT           shift and go to state 11
-    IF              shift and go to state 12
-    AS_LONG_AS      shift and go to state 13
-
-    statement                      shift and go to state 15
-    assignment                     shift and go to state 5
-    print_statement                shift and go to state 6
-    if_statement                   shift and go to state 7
-    loop_statement                 shift and go to state 8
-
-state 62
-
-    (32) if_statement -> IF expression LBRACE body RBRACE .
-    (33) if_statement -> IF expression LBRACE body RBRACE . ELSE LBRACE body RBRACE
-
-    AMERICA_GREAT   reduce using rule 32 (if_statement -> IF expression LBRACE body RBRACE .)
-    ID              reduce using rule 32 (if_statement -> IF expression LBRACE body RBRACE .)
-    MAKE            reduce using rule 32 (if_statement -> IF expression LBRACE body RBRACE .)
-    PRINT           reduce using rule 32 (if_statement -> IF expression LBRACE body RBRACE .)
-    IF              reduce using rule 32 (if_statement -> IF expression LBRACE body RBRACE .)
-    AS_LONG_AS      reduce using rule 32 (if_statement -> IF expression LBRACE body RBRACE .)
-    RBRACE          reduce using rule 32 (if_statement -> IF expression LBRACE body RBRACE .)
-    ELSE            shift and go to state 64
-
-
-state 63
-
-    (34) loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .
-
-    AMERICA_GREAT   reduce using rule 34 (loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .)
-    ID              reduce using rule 34 (loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .)
-    MAKE            reduce using rule 34 (loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .)
-    PRINT           reduce using rule 34 (loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .)
-    IF              reduce using rule 34 (loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .)
-    AS_LONG_AS      reduce using rule 34 (loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .)
-    RBRACE          reduce using rule 34 (loop_statement -> AS_LONG_AS expression LBRACE body RBRACE .)
-
-
-state 64
-
-    (33) if_statement -> IF expression LBRACE body RBRACE ELSE . LBRACE body RBRACE
-
-    LBRACE          shift and go to state 65
-
-
-state 65
-
-    (33) if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE . body RBRACE
+    (32) if_statement -> IF logical_expression LBRACE . body RBRACE
+    (33) if_statement -> IF logical_expression LBRACE . body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> IF logical_expression LBRACE . body RBRACE ELSE if_statement
     (3) body -> . statement
     (4) body -> . body statement
     (5) statement -> . assignment
     (6) statement -> . print_statement
     (7) statement -> . if_statement
     (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
+
+    ID              shift and go to state 9
+    MAKE            shift and go to state 10
+    PRINT           shift and go to state 11
+    IF              shift and go to state 12
+    AS_LONG_AS      shift and go to state 13
+
+    body                           shift and go to state 65
+    if_statement                   shift and go to state 7
+    statement                      shift and go to state 4
+    assignment                     shift and go to state 5
+    print_statement                shift and go to state 6
+    loop_statement                 shift and go to state 8
+
+state 51
+
+    (35) loop_statement -> AS_LONG_AS logical_expression LBRACE . body RBRACE
+    (3) body -> . statement
+    (4) body -> . body statement
+    (5) statement -> . assignment
+    (6) statement -> . print_statement
+    (7) statement -> . if_statement
+    (8) statement -> . loop_statement
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
 
     ID              shift and go to state 9
     MAKE            shift and go to state 10
@@ -2167,23 +1045,320 @@ state 65
     if_statement                   shift and go to state 7
     loop_statement                 shift and go to state 8
 
-state 66
+state 52
 
-    (33) if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body . RBRACE
+    (20) comparison -> arithmetic_operation EQ arithmetic_operation .
+
+    QUESTION        reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    AND             reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    OR              reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    AMERICA_GREAT   reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    ID              reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    MAKE            reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    PRINT           reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    IF              reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    AS_LONG_AS      reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    RBRACE          reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+    LBRACE          reduce using rule 20 (comparison -> arithmetic_operation EQ arithmetic_operation .)
+
+
+state 53
+
+    (21) comparison -> arithmetic_operation GE arithmetic_operation .
+
+    QUESTION        reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    AND             reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    OR              reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    AMERICA_GREAT   reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    ID              reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    MAKE            reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    PRINT           reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    IF              reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    AS_LONG_AS      reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    RBRACE          reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+    LBRACE          reduce using rule 21 (comparison -> arithmetic_operation GE arithmetic_operation .)
+
+
+state 54
+
+    (22) comparison -> arithmetic_operation LE arithmetic_operation .
+
+    QUESTION        reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    AND             reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    OR              reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    AMERICA_GREAT   reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    ID              reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    MAKE            reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    PRINT           reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    IF              reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    AS_LONG_AS      reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    RBRACE          reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+    LBRACE          reduce using rule 22 (comparison -> arithmetic_operation LE arithmetic_operation .)
+
+
+state 55
+
+    (23) comparison -> arithmetic_operation GT arithmetic_operation .
+
+    QUESTION        reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    AND             reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    OR              reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    AMERICA_GREAT   reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    ID              reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    MAKE            reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    PRINT           reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    IF              reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    AS_LONG_AS      reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    RBRACE          reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+    LBRACE          reduce using rule 23 (comparison -> arithmetic_operation GT arithmetic_operation .)
+
+
+state 56
+
+    (24) comparison -> arithmetic_operation LT arithmetic_operation .
+
+    QUESTION        reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    AND             reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    OR              reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    AMERICA_GREAT   reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    ID              reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    MAKE            reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    PRINT           reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    IF              reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    AS_LONG_AS      reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    RBRACE          reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+    LBRACE          reduce using rule 24 (comparison -> arithmetic_operation LT arithmetic_operation .)
+
+
+state 57
+
+    (25) comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .
+
+    QUESTION        reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    AND             reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    OR              reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    AMERICA_GREAT   reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    ID              reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    MAKE            reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    PRINT           reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    IF              reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    AS_LONG_AS      reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    RBRACE          reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+    LBRACE          reduce using rule 25 (comparison -> arithmetic_operation ASSIGN_OP_WORD arithmetic_operation .)
+
+
+state 58
+
+    (14) logical_expression -> logical_expression AND logical_expression .
+    (14) logical_expression -> logical_expression . AND logical_expression
+    (15) logical_expression -> logical_expression . OR logical_expression
+
+    AND             reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    OR              reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    AMERICA_GREAT   reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    ID              reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    MAKE            reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    PRINT           reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    IF              reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    AS_LONG_AS      reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    RBRACE          reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+    LBRACE          reduce using rule 14 (logical_expression -> logical_expression AND logical_expression .)
+
+  ! AND             [ shift and go to state 42 ]
+  ! OR              [ shift and go to state 43 ]
+
+
+state 59
+
+    (15) logical_expression -> logical_expression OR logical_expression .
+    (14) logical_expression -> logical_expression . AND logical_expression
+    (15) logical_expression -> logical_expression . OR logical_expression
+
+    OR              reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    AMERICA_GREAT   reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    ID              reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    MAKE            reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    PRINT           reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    IF              reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    AS_LONG_AS      reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    RBRACE          reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    LBRACE          reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .)
+    AND             shift and go to state 42
+
+  ! AND             [ reduce using rule 15 (logical_expression -> logical_expression OR logical_expression .) ]
+  ! OR              [ shift and go to state 43 ]
+
+
+state 60
+
+    (9) arithmetic_operation -> NUMBER PLUS NUMBER .
+
+    EQ              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    GE              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    LE              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    GT              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    LT              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    ASSIGN_OP_WORD  reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    AMERICA_GREAT   reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    ID              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    MAKE            reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    PRINT           reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    IF              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    AS_LONG_AS      reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    RBRACE          reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    RPAREN          reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    QUESTION        reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    AND             reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    OR              reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+    LBRACE          reduce using rule 9 (arithmetic_operation -> NUMBER PLUS NUMBER .)
+
+
+state 61
+
+    (10) arithmetic_operation -> NUMBER MINUS NUMBER .
+
+    EQ              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    GE              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    LE              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    GT              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    LT              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    ASSIGN_OP_WORD  reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    AMERICA_GREAT   reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    ID              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    MAKE            reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    PRINT           reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    IF              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    AS_LONG_AS      reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    RBRACE          reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    RPAREN          reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    QUESTION        reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    AND             reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    OR              reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+    LBRACE          reduce using rule 10 (arithmetic_operation -> NUMBER MINUS NUMBER .)
+
+
+state 62
+
+    (11) arithmetic_operation -> NUMBER TIMES NUMBER .
+
+    EQ              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    GE              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    LE              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    GT              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    LT              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    ASSIGN_OP_WORD  reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    AMERICA_GREAT   reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    ID              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    MAKE            reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    PRINT           reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    IF              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    AS_LONG_AS      reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    RBRACE          reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    RPAREN          reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    QUESTION        reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    AND             reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    OR              reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+    LBRACE          reduce using rule 11 (arithmetic_operation -> NUMBER TIMES NUMBER .)
+
+
+state 63
+
+    (12) arithmetic_operation -> NUMBER OVER NUMBER .
+
+    EQ              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    GE              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    LE              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    GT              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    LT              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    ASSIGN_OP_WORD  reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    AMERICA_GREAT   reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    ID              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    MAKE            reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    PRINT           reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    IF              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    AS_LONG_AS      reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    RBRACE          reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    RPAREN          reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    QUESTION        reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    AND             reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    OR              reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+    LBRACE          reduce using rule 12 (arithmetic_operation -> NUMBER OVER NUMBER .)
+
+
+state 64
+
+    (27) arithmetic_operation -> LPAREN arithmetic_operation RPAREN .
+
+    EQ              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    GE              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    LE              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    GT              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    LT              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    ASSIGN_OP_WORD  reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    AMERICA_GREAT   reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    ID              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    MAKE            reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    PRINT           reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    IF              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    AS_LONG_AS      reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    RBRACE          reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    RPAREN          reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    QUESTION        reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    AND             reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    OR              reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+    LBRACE          reduce using rule 27 (arithmetic_operation -> LPAREN arithmetic_operation RPAREN .)
+
+
+state 65
+
+    (32) if_statement -> IF logical_expression LBRACE body . RBRACE
+    (33) if_statement -> IF logical_expression LBRACE body . RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> IF logical_expression LBRACE body . RBRACE ELSE if_statement
     (4) body -> body . statement
     (5) statement -> . assignment
     (6) statement -> . print_statement
     (7) statement -> . if_statement
     (8) statement -> . loop_statement
-    (28) assignment -> . ID ASSIGN_OP_SIGN expression
-    (29) assignment -> . ID ASSIGN_OP_WORD expression
-    (30) assignment -> . MAKE ID expression
-    (31) print_statement -> . PRINT expression
-    (32) if_statement -> . IF expression LBRACE body RBRACE
-    (33) if_statement -> . IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    (34) loop_statement -> . AS_LONG_AS expression LBRACE body RBRACE
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
 
     RBRACE          shift and go to state 67
+    ID              shift and go to state 9
+    MAKE            shift and go to state 10
+    PRINT           shift and go to state 11
+    IF              shift and go to state 12
+    AS_LONG_AS      shift and go to state 13
+
+    if_statement                   shift and go to state 7
+    statement                      shift and go to state 15
+    assignment                     shift and go to state 5
+    print_statement                shift and go to state 6
+    loop_statement                 shift and go to state 8
+
+state 66
+
+    (35) loop_statement -> AS_LONG_AS logical_expression LBRACE body . RBRACE
+    (4) body -> body . statement
+    (5) statement -> . assignment
+    (6) statement -> . print_statement
+    (7) statement -> . if_statement
+    (8) statement -> . loop_statement
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
+
+    RBRACE          shift and go to state 68
     ID              shift and go to state 9
     MAKE            shift and go to state 10
     PRINT           shift and go to state 11
@@ -2198,13 +1373,129 @@ state 66
 
 state 67
 
-    (33) if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .
+    (32) if_statement -> IF logical_expression LBRACE body RBRACE .
+    (33) if_statement -> IF logical_expression LBRACE body RBRACE . ELSE LBRACE body RBRACE
+    (34) if_statement -> IF logical_expression LBRACE body RBRACE . ELSE if_statement
 
-    AMERICA_GREAT   reduce using rule 33 (if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
-    ID              reduce using rule 33 (if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
-    MAKE            reduce using rule 33 (if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
-    PRINT           reduce using rule 33 (if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
-    IF              reduce using rule 33 (if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
-    AS_LONG_AS      reduce using rule 33 (if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
-    RBRACE          reduce using rule 33 (if_statement -> IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
+    AMERICA_GREAT   reduce using rule 32 (if_statement -> IF logical_expression LBRACE body RBRACE .)
+    ID              reduce using rule 32 (if_statement -> IF logical_expression LBRACE body RBRACE .)
+    MAKE            reduce using rule 32 (if_statement -> IF logical_expression LBRACE body RBRACE .)
+    PRINT           reduce using rule 32 (if_statement -> IF logical_expression LBRACE body RBRACE .)
+    IF              reduce using rule 32 (if_statement -> IF logical_expression LBRACE body RBRACE .)
+    AS_LONG_AS      reduce using rule 32 (if_statement -> IF logical_expression LBRACE body RBRACE .)
+    RBRACE          reduce using rule 32 (if_statement -> IF logical_expression LBRACE body RBRACE .)
+    ELSE            shift and go to state 69
+
+
+state 68
+
+    (35) loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .
+
+    AMERICA_GREAT   reduce using rule 35 (loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .)
+    ID              reduce using rule 35 (loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .)
+    MAKE            reduce using rule 35 (loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .)
+    PRINT           reduce using rule 35 (loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .)
+    IF              reduce using rule 35 (loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .)
+    AS_LONG_AS      reduce using rule 35 (loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .)
+    RBRACE          reduce using rule 35 (loop_statement -> AS_LONG_AS logical_expression LBRACE body RBRACE .)
+
+
+state 69
+
+    (33) if_statement -> IF logical_expression LBRACE body RBRACE ELSE . LBRACE body RBRACE
+    (34) if_statement -> IF logical_expression LBRACE body RBRACE ELSE . if_statement
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+
+    LBRACE          shift and go to state 70
+    IF              shift and go to state 12
+
+    if_statement                   shift and go to state 71
+
+state 70
+
+    (33) if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE . body RBRACE
+    (3) body -> . statement
+    (4) body -> . body statement
+    (5) statement -> . assignment
+    (6) statement -> . print_statement
+    (7) statement -> . if_statement
+    (8) statement -> . loop_statement
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
+
+    ID              shift and go to state 9
+    MAKE            shift and go to state 10
+    PRINT           shift and go to state 11
+    IF              shift and go to state 12
+    AS_LONG_AS      shift and go to state 13
+
+    body                           shift and go to state 72
+    statement                      shift and go to state 4
+    assignment                     shift and go to state 5
+    print_statement                shift and go to state 6
+    if_statement                   shift and go to state 7
+    loop_statement                 shift and go to state 8
+
+state 71
+
+    (34) if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .
+
+    AMERICA_GREAT   reduce using rule 34 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .)
+    ID              reduce using rule 34 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .)
+    MAKE            reduce using rule 34 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .)
+    PRINT           reduce using rule 34 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .)
+    IF              reduce using rule 34 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .)
+    AS_LONG_AS      reduce using rule 34 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .)
+    RBRACE          reduce using rule 34 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE if_statement .)
+
+
+state 72
+
+    (33) if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body . RBRACE
+    (4) body -> body . statement
+    (5) statement -> . assignment
+    (6) statement -> . print_statement
+    (7) statement -> . if_statement
+    (8) statement -> . loop_statement
+    (28) assignment -> . ID ASSIGN_OP_SIGN value
+    (29) assignment -> . ID ASSIGN_OP_WORD value
+    (30) assignment -> . MAKE ID value
+    (31) print_statement -> . PRINT value
+    (32) if_statement -> . IF logical_expression LBRACE body RBRACE
+    (33) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+    (34) if_statement -> . IF logical_expression LBRACE body RBRACE ELSE if_statement
+    (35) loop_statement -> . AS_LONG_AS logical_expression LBRACE body RBRACE
+
+    RBRACE          shift and go to state 73
+    ID              shift and go to state 9
+    MAKE            shift and go to state 10
+    PRINT           shift and go to state 11
+    IF              shift and go to state 12
+    AS_LONG_AS      shift and go to state 13
+
+    statement                      shift and go to state 15
+    assignment                     shift and go to state 5
+    print_statement                shift and go to state 6
+    if_statement                   shift and go to state 7
+    loop_statement                 shift and go to state 8
+
+state 73
+
+    (33) if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .
+
+    AMERICA_GREAT   reduce using rule 33 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
+    ID              reduce using rule 33 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
+    MAKE            reduce using rule 33 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
+    PRINT           reduce using rule 33 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
+    IF              reduce using rule 33 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
+    AS_LONG_AS      reduce using rule 33 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
+    RBRACE          reduce using rule 33 (if_statement -> IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE .)
 

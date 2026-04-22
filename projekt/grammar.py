@@ -36,6 +36,25 @@ def p_expression_binop(p):
                   | expression AND expression
                   | expression OR expression"""
 
+# logical_expression : comparison AND comparison
+#                   | comparison OR comparison
+#                   | logical_expression AND logical_expression
+#                   | logical_expression OR logical_expression
+#                   | FACT
+#                   | LIE"
+
+# operation : NUMBER PLUS expression
+#                   | expression MINUS expression
+#                   | expression TIMES expression
+#                   | expression OVER expression
+
+# comparison : expression EQ expression
+#                   | expression GE expression
+#                   | expression LE expression
+#                   | expression GT expression
+#                   | expression LT expression
+#                   | expression ASSIGN_OP_WORD expression
+
 def p_expression_comparison(p):
     """expression : expression EQ expression
                   | expression GE expression
@@ -47,8 +66,19 @@ def p_expression_comparison(p):
 def p_expression_question(p):
     """expression : expression QUESTION"""
 
+#     logical_expression : comparison QUESTION
+
 def p_expression_group(p):
     """expression : LPAREN expression RPAREN"""
+
+#     value : NUMBER
+#                   | STRING
+#                   | ID
+#                   | logical_expression
+
+# expression : NUMBER
+#                   | STRING
+#                   | ID
 
 def p_expression_value(p):
     """expression : NUMBER
@@ -56,3 +86,4 @@ def p_expression_value(p):
                   | ID
                   | FACT
                   | LIE"""
+
