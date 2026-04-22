@@ -1,10 +1,11 @@
 import ply.lex as lex
 import ply.yacc as yacc
+import pprint
+
 
 # ======================
 # TOKENS
 # ======================
-
 tokens = (
     "ID", "STRING", "NUMBER",
     "PLUS", "MINUS", "TIMES", "OVER",
@@ -20,12 +21,11 @@ tokens = (
     "QUESTION",
     "AS_LONG_AS"
 )
-
 t_LPAREN = r','
 t_RPAREN = r';'
 t_LBRACE = r':'
 t_RBRACE = r'!'
-t_ignore = ' \t.'
+t_ignore = ' \t'
 t_GE = r'>='
 t_LE = r'<='
 t_EQ = r'=='
@@ -98,10 +98,10 @@ precedence = (
     ('left', 'TIMES', 'OVER'),
 )
 
+
 # ======================
 # PARSER
 # ======================
-
 def p_program(p):
     """program : body AMERICA_GREAT
                | AMERICA_GREAT"""
@@ -165,8 +165,8 @@ def p_expression_value(p):
 # STATEMENTS
 def p_assignment(p):
     """assignment : ID ASSIGN_OP_SIGN expression
-                 | ID ASSIGN_OP_WORD expression
-                 | MAKE ID expression"""
+                  | ID ASSIGN_OP_WORD expression
+                  | MAKE ID expression"""
     if p.slice[1].type == 'MAKE':
         p[0] = ("assign", p[2], p[3])
     else:
@@ -178,11 +178,14 @@ def p_print(p):
 
 def p_if_statement(p):
     """if_statement : IF expression LBRACE body RBRACE
-                    | IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE"""
+                    | IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+                    | IF expression LBRACE body RBRACE ELSE if_statement"""
     if len(p) == 6:
         p[0] = ('if', p[2], p[4])
-    else:
+    elif len(p) == 10:
         p[0] = ('if_else', p[2], p[4], p[8])
+    elif len(p) == 8:
+        p[0] = ('if_else_if', p[2], p[4], [p[7]])
 
 def p_loop_statement(p):
     """loop_statement : AS_LONG_AS expression LBRACE body RBRACE"""
@@ -194,14 +197,12 @@ def p_error(p):
     else:
         print("Syntax Error at EOF")
 
+
 # ======================
 # BUILD & TEST
 # ======================
-
 lexer = lex.lex()
 parser = yacc.yacc()
-
-import pprint
 
 test_cases = [
     'x = 10 America is great.',
@@ -223,7 +224,7 @@ test_cases = [
     make wall_test wall is "test"?
     make america_test america is "great"?
     result is ,wall_test and america_test;
-    as long as result==fact:
+    as long as result:
         say "Jestem w pętli"
         make result lie
     !
@@ -231,11 +232,11 @@ test_cases = [
     America is great.
 """
 ]
-#
+
 if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=2)
     for i, code in enumerate(test_cases, 1):
-        print(f"\n🚀 TEST #{i}:")
+        print(f"\n TEST #{i}:")
         print(f"KOD: {code.strip()[:100]}...")
         result = parser.parse(code)
         pp.pprint(result)
