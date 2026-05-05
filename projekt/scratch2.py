@@ -9,7 +9,7 @@ tokens = (
     "AMERICA_GREAT", "FACT", "LIE", "LPAREN", "RPAREN",
     "LBRACE", "RBRACE", "IF", "ELSE", "GREATER", "LESS",
     "QUESTION", "GE", "LE", "GT", "LT", "EQ", "AND", "OR",
-    "AS_LONG_AS"
+    "AS_LONG_AS", "STOP", "NOT"
 )
 t_LPAREN = r','
 t_RPAREN = r';'
@@ -27,11 +27,12 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_OVER = r'/'
-
+t_NOT = r"\~"
 
 def t_AMERICA_GREAT(t):
     r"""America\s+is\s+great\."""
     return t
+
 def t_AS_LONG_AS(t):
     r"""as\s+long\s+as"""
     return t
@@ -55,6 +56,7 @@ def t_ID(t):
         'more': 'GREATER', 'greater': 'GREATER', 'larger': 'GREATER',
         'less': 'LESS', 'fewer': 'LESS', 'smaller': 'LESS',
         'and': 'AND', 'or': 'OR',
+        "stop": "STOP"
     }
     t.type = keywords.get(val, 'ID')
     return t

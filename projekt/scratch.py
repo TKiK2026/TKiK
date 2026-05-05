@@ -1,11 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
-import pprint
 
 
-# ======================
-# TOKENS
-# ======================
 tokens = (
     "ID",
     "STRING",
@@ -36,6 +32,8 @@ tokens = (
     "OR",
     "QUESTION",
     "AS_LONG_AS",
+    "STOP",
+    "NOT"
 )
 t_LPAREN = r","
 t_RPAREN = r";"
@@ -53,17 +51,16 @@ t_MINUS = r"-"
 t_TIMES = r"\*"
 t_OVER = r"/"
 t_QUESTION = r"\?"
+t_NOT = r"\~"
 
 
 def t_AMERICA_GREAT(t):
     r"""America\s+is\s+great\."""
     return t
 
-
 def t_AS_LONG_AS(t):
     r"""as\s+long\s+as"""
     return t
-
 
 def t_ID(t):
     r"""[a-zA-Z_][a-zA-Z_0-9]*"""
@@ -84,68 +81,55 @@ def t_ID(t):
         "else": "ELSE",
         "and": "AND",
         "or": "OR",
+        "stop": "STOP",
     }
     t.type = keywords.get(val, "ID")
     return t
 
-
 def t_STRING(t):
     r"\"[^\"]*\""
     return t
-
 
 def t_NUMBER(t):
     r"""\d+"""
     t.value = int(t.value)
     return t
 
-
 def t_newline(t):
     r"""\n+"""
     t.lexer.lineno += len(t.value)
-
 
 def t_error(t):
     print(f"Illegal character '{t.value[0]}'")
     t.lexer.skip(1)
 
 
-# ======================
-# PRECEDENCE
-# ======================
 # W PLY im niżej na liście, tym silniej wiąże operator.
 precedence = (
     ("left", "OR"),
     ("left", "AND"),
     ("left", "QUESTION"),  # Pytajnik wiąże słabiej niż porównania...
-    (
-        "nonassoc",
+    ("nonassoc",
         "EQ",
         "GE",
         "LE",
         "GT",
         "LT",
-        "ASSIGN_OP_WORD",
-    ),  # ...więc "is" wykona się najpierw.
+        "ASSIGN_OP_WORD"),  # ...więc "is" wykona się najpierw.
     ("left", "PLUS", "MINUS"),
     ("left", "TIMES", "OVER"),
 )
 
 
-# ======================
-# PARSER
-# ======================
 def p_program(p):
     """program : body AMERICA_GREAT
                | AMERICA_GREAT"""
     p[0] = [] if len(p) == 2 else p[1]
 
-
 def p_body(p):
     """body : statement
             | body statement"""
     p[0] = [p[1]] if len(p) == 2 else p[1] + [p[2]]
-
 
 def p_statement(p):
     """statement : assignment
@@ -154,24 +138,26 @@ def p_statement(p):
                  | loop_statement"""
     p[0] = p[1]
 
+def p_arithmetic_binop(p):
+    """arithmetic_operation : arithmetic_operation PLUS arithmetic_operation
+                            | arithmetic_operation MINUS arithmetic_operation
+                            | arithmetic_operation TIMES arithmetic_operation
+                            | arithmetic_operation OVER arithmetic_operation"""
+    p[0] = (p.slice[2].type, p[1], p[3])
 
-# EXPRESSIONS
-def p_arithmetic_operation(p):
-    """arithmetic_operation : NUMBER PLUS NUMBER
-                            | NUMBER MINUS NUMBER
-                            | NUMBER TIMES NUMBER
-                            | NUMBER OVER NUMBER
-                            | NUMBER"""
-    if len(p) == 2:
-        p[0] = p[1]
-    else:
-        p[0] = (p.slice[2].type, p[1], p[3])
-
+def p_arithmetic_value(p):
+    """arithmetic_operation : NUMBER
+                            | ID"""
+    p[0] = p[1]
 
 def p_expression_binop(p):
     """logical_expression : logical_expression AND logical_expression
                           | logical_expression OR logical_expression"""
     p[0] = (p.slice[2].type, p[1], p[3])
+
+def p_logical_not(p):
+    "logical_expression : NOT logical_expression"
+    p[0] = ("NOT", p[2])
 
 def p_logical_expression(p):
     """logical_expression : comparison
@@ -179,7 +165,6 @@ def p_logical_expression(p):
                           | FACT
                           | LIE"""
     p[0] = p[1]
-
 
 # POROQWNYWANIE STRINGOW I FACT LIE
 def p_comparison(p):
@@ -192,16 +177,13 @@ def p_comparison(p):
     # p[2] zwróci nam "is" lub "are", p.slice[2].type zwróci "ASSIGN_OP_WORD"
     p[0] = ("COMPARE", p.slice[2].type, p[1], p[3])
 
-
 def p_expression_question(p):
     """question_expression : comparison QUESTION"""
     p[0] = ("QUESTION", p[1])
 
-
 def p_expression_group(p):
     """arithmetic_operation : LPAREN arithmetic_operation RPAREN"""
     p[0] = p[2]
-
 
 # def p_expression_value(p):
 #     """expression : arithmetic_operation"""
@@ -214,8 +196,6 @@ def p_expression_group(p):
 #     else:
 #         p[0] = p[1]
 
-
-# STATEMENTS
 def p_assignment(p):
     """assignment : ID ASSIGN_OP_SIGN value
                   | ID ASSIGN_OP_WORD value
@@ -225,16 +205,14 @@ def p_assignment(p):
     else:
         p[0] = ("assign", p[1], p[3])
 
-
 def p_print(p):
     """print_statement : PRINT value"""
     p[0] = ("print", p[2])
 
-
 def p_if_statement(p):
     """if_statement : IF logical_expression LBRACE body RBRACE
-    | IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
-    | IF logical_expression LBRACE body RBRACE ELSE if_statement"""
+                    | IF logical_expression LBRACE body RBRACE ELSE LBRACE body RBRACE
+                    | IF logical_expression LBRACE body RBRACE ELSE if_statement"""
     if len(p) == 6:
         p[0] = ("if", p[2], p[4])
     elif len(p) == 10:
@@ -242,11 +220,13 @@ def p_if_statement(p):
     elif len(p) == 8:
         p[0] = ("if_else_if", p[2], p[4], [p[7]])
 
-
 def p_loop_statement(p):
     """loop_statement : AS_LONG_AS logical_expression LBRACE body RBRACE"""
     p[0] = ("while", p[2], p[4])
 
+def p_statement_stop(p):
+    "statement : STOP"
+    p[0] = ("break",)
 
 def p_value(p):
     """value : arithmetic_operation
@@ -254,7 +234,6 @@ def p_value(p):
              | ID
              | logical_expression"""
     p[0] = p[1]
-
 
 def p_error(p):
     if p:
