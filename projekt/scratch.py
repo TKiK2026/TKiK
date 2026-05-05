@@ -420,36 +420,12 @@ def translate_to_python(node, indent=0, parent_prec=0, in_loop=False, var_types=
 
 
 test_cases = [
-    "x = 10 America is great.",
-    "Make budget 1000 America is great.",
-    'TheWall is "High" America is great.',
-    'say "Believe me" America is great.',
-    "say 2 + 2 * 2 America is great.",
-    "say ,2 + 2; * 2 America is great.",
-    "say fact is fact? America is great.",
-    "say fact is fact? and lie is lie? America is great.",
-    "say 10 plus 5 == 15? America is great.",
-    "say fact or lie and lie America is great.",
-    'if fact: say "It is true" ! America is great.',
-    'if lie: say "Fake News" ! else: say "True Story"  if fact: say "I love" !! America is great.',
-    "as long as x > 0: x = x - 1 ! America is great.",
     """
-    make wall "test"
-    america is "great"
-    make wall_test wall is "test"?
-    make america_test america is "great"?
-    result is ,wall_test and america_test;
-    as long as result:
-        say "Jestem w petli"
-        make result lie
-    !
-    say result
+    make wall "high"
+    if wall is high?:
+        say wall!
     America is great.
     """,
-    """make wall 100 
-    if wall == 100: 
-        say wall! 
-    America is great.""",
 ]
 
 
@@ -474,3 +450,4 @@ if __name__ == "__main__":
         print("\nWYGENEROWANY KOD (Python):")
         print(python_code)
         print("\n")
+#brak modulo
