@@ -55,7 +55,7 @@ America is great.
 | LIE            | `lie`                      | Wartość logiczna fałsz                       |
 | IF             | `if`                       | Instrukcja warunkowa                         |
 | ELSE           | `else`                     | Alternatywa warunku                          |
-| GREATER        | `more`, `greater`, `larger` | Operator większy (opisowy)                   |
+| GREATER        | `more`, `greater`, `larger` | Operator większy (opisowy)                  |
 | LESS           | `less`, `fewer`, `smaller` | Operator mniejszy (opisowy)                  |
 | GT             | `>`                        | Operator większy niż                         |
 | LT             | `<`                        | Operator mniejszy niż                        |
@@ -64,7 +64,9 @@ America is great.
 | EQ             | `==`                       | Operator równości                            |
 | AND            | `and`                      | Operator logiczny AND                        |
 | OR             | `or`                       | Operator logiczny OR                         |
+| NOT            | `~`                        | Operator logiczny negacji                    |
 | AS_LONG_AS     | `as long as`               | Pętla while                                  |
+| BREAK          | `stop`                     | break                                        |
 | LPAREN         | `,`                        | nawias otwierający                           |
 | RPAREN         | `;`                        | nawiasu zamykający                           |
 | LBRACE         | `:`                        | Początek bloku instrukcji if oraz as long as |
