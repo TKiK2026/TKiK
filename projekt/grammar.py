@@ -10,14 +10,15 @@ def p_statement(p):
     """statement : assignment
                  | print_statement
                  | if_statement
-                 | loop_statement"""
+                 | loop_statement
+                 | BREAK"""
 
 def p_assignment(p):
     """assignment : ID ASSIGN_OP_SIGN expression
                   | ID ASSIGN_OP_WORD expression
                   | MAKE ID expression"""
 
-def p_print(p):
+def p_print_statement(p):
     """print_statement : PRINT expression"""
 
 def p_if_statement(p):
@@ -36,26 +37,7 @@ def p_expression_binop(p):
                   | expression AND expression
                   | expression OR expression"""
 
-# logical_expression : comparison AND comparison
-#                   | comparison OR comparison
-#                   | logical_expression AND logical_expression
-#                   | logical_expression OR logical_expression
-#                   | FACT
-#                   | LIE"
-
-# operation : NUMBER PLUS expression
-#                   | expression MINUS expression
-#                   | expression TIMES expression
-#                   | expression OVER expression
-
-# comparison : expression EQ expression
-#                   | expression GE expression
-#                   | expression LE expression
-#                   | expression GT expression
-#                   | expression LT expression
-#                   | expression ASSIGN_OP_WORD expression
-
-def p_expression_comparison(p):
+def p_expression_compare(p):
     """expression : expression EQ expression
                   | expression GE expression
                   | expression LE expression
@@ -63,22 +45,14 @@ def p_expression_comparison(p):
                   | expression LT expression
                   | expression ASSIGN_OP_WORD expression"""
 
+def p_expression_unary(p):
+    """expression : NOT expression"""
+
 def p_expression_question(p):
     """expression : expression QUESTION"""
 
-#     logical_expression : comparison QUESTION
-
 def p_expression_group(p):
     """expression : LPAREN expression RPAREN"""
-
-#     value : NUMBER
-#                   | STRING
-#                   | ID
-#                   | logical_expression
-
-# expression : NUMBER
-#                   | STRING
-#                   | ID
 
 def p_expression_value(p):
     """expression : NUMBER
@@ -86,4 +60,4 @@ def p_expression_value(p):
                   | ID
                   | FACT
                   | LIE"""
-
+    
