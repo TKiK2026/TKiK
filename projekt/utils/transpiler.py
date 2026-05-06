@@ -1,4 +1,4 @@
-from errors import SemanticError
+from .errors import SemanticError
 
 PRECEDENCE = {
     "OR": 1, "AND": 2, "NOT": 3, "COMPARE": 4,

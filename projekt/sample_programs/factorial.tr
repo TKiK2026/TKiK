@@ -1,0 +1,12 @@
+make n 6
+make result 1
+make i 1
+
+as long as i <= n :
+    make result result * i
+    make i i + 1
+!
+
+say result
+
+America is great.

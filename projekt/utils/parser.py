@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-from lexer import tokens  # yacc wymaga żeby tokens był dostępny w module
+from .lexer import tokens
 
 precedence = (
     ("left",    "QUESTION"),

@@ -1,0 +1,27 @@
+make n 29
+make is_prime fact
+make divisor 2
+make half n / 2
+
+as long as divisor <= half :
+    make temp n
+    as long as temp >= divisor :
+        make temp temp - divisor
+    !
+
+    if temp == 0 :
+        make is_prime lie
+        stop
+    !
+
+    make divisor divisor + 1
+!
+
+if is_prime :
+    say "Liczba jest pierwsza!"
+!
+else :
+    say "To nie jest liczba pierwsza."
+!
+
+America is great.

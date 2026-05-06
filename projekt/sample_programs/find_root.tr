@@ -1,0 +1,21 @@
+make x 35
+make low 0
+make high x
+make ans 0
+
+as long as low <= high :
+    make mid , low + high ; / 2
+    make mid_sq mid * mid
+
+    if mid_sq <= x :
+        make ans mid
+        make low mid + 1
+    !
+    else :
+        make high mid - 1
+    !
+!
+
+say ans
+
+America is great.

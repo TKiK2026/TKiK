@@ -1,0 +1,12 @@
+make limit 100
+make a 0
+make b 1
+
+as long as a < limit :
+    say a
+    make nxt a + b
+    make a b
+    make b nxt
+!
+
+America is great.
