@@ -1,0 +1,1 @@
+# 2. Panel środkowy — Python

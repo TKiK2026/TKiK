@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from .lexer import tokens
-
+from .errors import ParserError
 precedence = (
     ("left",    "QUESTION"),
     ("left",    "OR"),
@@ -97,8 +97,8 @@ def p_expression_value(p):
 
 def p_error(p):
     if p:
-        print(f"Syntax Error near '{p.value}' (line {p.lineno})")
+        raise ParserError(f"Błąd składniowy w pobliżu '{p.value}' (linia {p.lineno})")
     else:
-        print("Syntax Error at EOF")
+        raise ParserError("Błąd składniowy: niespodziewany koniec kodu (EOF)")
 
 parser = yacc.yacc()

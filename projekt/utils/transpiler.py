@@ -7,7 +7,7 @@ PRECEDENCE = {
 
 OP_MAP_COMPARE = {
     "EQ": "==", "GE": ">=", "LE": "<=",
-    "GT": ">",  "LT": "<",  "ASSIGN_OP_WORD": "==",
+    "GT": ">", "LT": "<", "ASSIGN_OP_WORD": "==",
 }
 
 OP_MAP_MATH = {"PLUS": "+", "MINUS": "-", "TIMES": "*", "OVER": "/"}
@@ -15,6 +15,7 @@ OP_MAP_LOGIC = {"AND": "and", "OR": "or"}
 
 
 def infer_type(node, var_types):
+    """Zgaduje typ wyrażenia na podstawie AST i aktualnych zmiennych."""
     if isinstance(node, int):
         return "number"
     if node in ("fact", "lie"):
@@ -23,27 +24,33 @@ def infer_type(node, var_types):
         return "string"
     if isinstance(node, str):
         return var_types.get(node, "unknown")
+
     if isinstance(node, tuple):
         op = node[0]
         if op in ("COMPARE", "AND", "OR", "NOT", "QUESTION"):
             return "bool"
-        if op == "PLUS":
-            return "string" if infer_type(node[1], var_types) == "string" else "number"
-        if op in ("MINUS", "TIMES", "OVER"):
+        if op in ("PLUS", "MINUS", "TIMES", "OVER"):
+            # Jeśli w dodawaniu jest string, wynik to string (konkatenacja)
+            if op == "PLUS":
+                t1 = infer_type(node[1], var_types)
+                t2 = infer_type(node[2], var_types)
+                if t1 == "string" or t2 == "string":
+                    return "string"
             return "number"
+
     return "unknown"
 
 
 def enforce_logical_condition(node, context_name, var_types):
+    """Wymusza, aby wyrażenie było typem boolowskim (fact/lie lub porówanie)."""
     node_type = infer_type(node, var_types)
     if node_type == "number":
         raise SemanticError(
-            f"W {context_name} oczekiwano warunku logicznego (fact/lie), "
-            f"a podano liczbę lub wyrażenie arytmetyczne."
+            f"W {context_name} oczekiwano warunku logicznego, a podano liczbę (typ 'number')."
         )
     if node_type == "string":
         raise SemanticError(
-            f"W {context_name} oczekiwano warunku logicznego (fact/lie), a podano tekst."
+            f"W {context_name} oczekiwano warunku logicznego, a podano tekst (typ 'string')."
         )
 
 
@@ -69,6 +76,9 @@ def translate_to_python(node, indent=0, parent_prec=0, in_loop=False, var_types=
         if node == "fact":   return "True"
         if node == "lie":    return "False"
         if isinstance(node, str) and not node.startswith('"'):
+            # Sprawdzenie czy zmienna istnieje przed użyciem (zapobiega runtime errorom)
+            if node not in var_types and node not in ("fact", "lie"):
+                raise SemanticError(f"Zmienna '{node}' nie została zadeklarowana przed użyciem!")
             return node
         return str(node)
 
@@ -76,11 +86,14 @@ def translate_to_python(node, indent=0, parent_prec=0, in_loop=False, var_types=
 
     # --- INSTRUKCJE ---
     if op == "assign":
+        # Rejestrujemy typ zmiennej w słowniku środowiska
         var_types[node[1]] = infer_type(node[2], var_types)
-        return f"{ind}{node[1]} = {translate_to_python(node[2], 0, 0, in_loop, var_types)}"
+        val = translate_to_python(node[2], 0, 0, in_loop, var_types)
+        return f"{ind}{node[1]} = {val}"
 
     if op == "print":
-        return f"{ind}print({translate_to_python(node[1], 0, 0, in_loop, var_types)})"
+        val = translate_to_python(node[1], 0, 0, in_loop, var_types)
+        return f"{ind}print({val})"
 
     if op == "break":
         if not in_loop:
@@ -101,22 +114,34 @@ def translate_to_python(node, indent=0, parent_prec=0, in_loop=False, var_types=
 
     if op == "if_else":
         enforce_logical_condition(node[1], "instrukcji 'if-else'", var_types)
-        cond  = translate_to_python(node[1], 0, 0, in_loop, var_types)
+        cond = translate_to_python(node[1], 0, 0, in_loop, var_types)
         body1 = translate_to_python(node[2], indent + 1, 0, in_loop, var_types)
         body2 = translate_to_python(node[3], indent + 1, 0, in_loop, var_types)
         return f"{ind}if {cond}:\n{body1}\n{ind}else:\n{body2}"
 
     if op == "if_else_if":
         enforce_logical_condition(node[1], "instrukcji 'if-else-if'", var_types)
-        cond      = translate_to_python(node[1], 0, 0, in_loop, var_types)
-        body      = translate_to_python(node[2], indent + 1, 0, in_loop, var_types)
+        cond = translate_to_python(node[1], 0, 0, in_loop, var_types)
+        body = translate_to_python(node[2], indent + 1, 0, in_loop, var_types)
         else_body = translate_to_python(node[3], indent + 1, 0, in_loop, var_types)
         return f"{ind}if {cond}:\n{body}\n{ind}else:\n{else_body}"
 
     # --- WYRAŻENIA ---
     if op == "COMPARE":
-        prec  = PRECEDENCE["COMPARE"]
-        left  = translate_to_python(node[2], 0, prec, in_loop, var_types)
+        # 1. Pobieramy oczekiwane typy obu stron porównania
+        left_type = infer_type(node[2], var_types)
+        right_type = infer_type(node[3], var_types)
+
+        # 2. Sprawdzamy, czy typy są znane i czy się od siebie różnią
+        if left_type != "unknown" and right_type != "unknown" and left_type != right_type:
+            raise SemanticError(
+                f"Błąd typów w porównaniu: Nie można porównywać typu '{left_type}' "
+                f"z typem '{right_type}'!"
+            )
+
+        # 3. Jeśli typy są zgodne, generujemy kod Pythona (tak jak dotychczas)
+        prec = PRECEDENCE["COMPARE"]
+        left = translate_to_python(node[2], 0, prec, in_loop, var_types)
         right = translate_to_python(node[3], 0, prec + 1, in_loop, var_types)
         return _wrap_if_needed(f"{left} {OP_MAP_COMPARE[node[1]]} {right}", prec, parent_prec)
 
@@ -130,28 +155,30 @@ def translate_to_python(node, indent=0, parent_prec=0, in_loop=False, var_types=
         return _wrap_if_needed(f"not {inner}", prec, parent_prec)
 
     if op in OP_MAP_MATH:
-        left_type  = infer_type(node[1], var_types)
+        left_type = infer_type(node[1], var_types)
         right_type = infer_type(node[2], var_types)
 
+        # Ręczne wymuszanie typów dla działań matematycznych
         if left_type == "bool" or right_type == "bool":
-            raise SemanticError(f"Nie można używać 'fact'/'lie' w operacjach matematycznych ('{op}').")
-        if left_type != "unknown" and right_type != "unknown" and left_type != right_type:
-            raise SemanticError(f"Nie można mieszać typów {left_type} i {right_type} w '{op}'.")
-        if left_type == "string" and op != "PLUS":
-            raise SemanticError(f"Na tekstach można używać tylko 'plus'. Zakazana operacja: '{op}'.")
-        if op == "OVER" and node[2] == 0:
-            raise SemanticError("Dzielenie przez 0 jest niedozwolone!")
+            raise SemanticError(f"Nie można używać typów logicznych (fact/lie) w operacjach '{op}'.")
 
-        prec  = PRECEDENCE[op]
-        left  = translate_to_python(node[1], 0, prec, in_loop, var_types)
+        if left_type == "string" or right_type == "string":
+            if op != "PLUS":
+                raise SemanticError(f"Na tekstach można używać tylko 'plus'. Zakazana operacja: '{op}'.")
+
+        if op == "OVER" and node[2] == 0:
+            raise SemanticError("Dzielenie przez 0 jest niedozwolone w czasie kompilacji!")
+
+        prec = PRECEDENCE[op]
+        left = translate_to_python(node[1], 0, prec, in_loop, var_types)
         right = translate_to_python(node[2], 0, prec + 1, in_loop, var_types)
         return _wrap_if_needed(f"{left} {OP_MAP_MATH[op]} {right}", prec, parent_prec)
 
     if op in OP_MAP_LOGIC:
         enforce_logical_condition(node[1], f"operatorze '{op}'", var_types)
         enforce_logical_condition(node[2], f"operatorze '{op}'", var_types)
-        prec  = PRECEDENCE[op]
-        left  = translate_to_python(node[1], 0, prec, in_loop, var_types)
+        prec = PRECEDENCE[op]
+        left = translate_to_python(node[1], 0, prec, in_loop, var_types)
         right = translate_to_python(node[2], 0, prec + 1, in_loop, var_types)
         return _wrap_if_needed(f"{left} {OP_MAP_LOGIC[op]} {right}", prec, parent_prec)
 

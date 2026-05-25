@@ -3,26 +3,9 @@ import tkinter.font
 from tkinter import ttk, messagebox
 import io
 import sys
-
-# Próba importu Twoich modułów translatora.
-try:
-    from utils.parser import parser
-    from utils.transpiler import translate_to_python
-    from utils.errors import SemanticError
-except ImportError:
-    class SemanticError(Exception):
-        pass
-
-
-    class MockParser:
-        def parse(self, code): return "mock_ast" if code else None
-
-
-    parser = MockParser()
-
-
-    def translate_to_python(ast):
-        return "print('Hello World from Python!')\n# Przykładowy wygenerowany kod"
+from utils.errors import LexerError, ParserError, SemanticError
+from utils.parser import parser
+from utils.transpiler import translate_to_python
 
 
 def translate():
@@ -35,28 +18,11 @@ def translate():
     output_text.delete("1.0", tk.END)
 
     try:
-        captured = io.StringIO()
-        sys.stdout = captured
-
+        # Generowanie AST - bez kombinowania z sys.stdout!
         ast = parser.parse(code)
 
-        sys.stdout = sys.__stdout__
-        ply_errors = captured.getvalue().strip()
-
         if ast is None:
-            error_msg = ply_errors if ply_errors else "Błąd składniowy — sprawdź kod."
-            output_text.insert(tk.END, error_msg)
-            output_text.config(fg="#f85149")
-            status_var.set("✗ Syntax Error")
-            status_label.config(fg="#f85149")
-            return None
-
-        if ply_errors:
-            output_text.insert(tk.END, ply_errors)
-            output_text.config(fg="#f85149")
-            status_var.set("✗ Syntax Error")
-            status_label.config(fg="#f85149")
-            return None
+            raise ParserError("Pusty program lub nierozpoznana składnia.")
 
         python_code = translate_to_python(ast)
 
@@ -73,24 +39,28 @@ def translate():
             status_label.config(fg="#8b949e")
             return None
 
+    except (LexerError, ParserError) as e:
+        output_text.insert(tk.END, f"Błąd Składni (Syntax Error):\n{e}")
+        output_text.config(fg="#f85149")
+        status_var.set("✗ Syntax Error")
+        status_label.config(fg="#f85149")
+        return None
+
     except SemanticError as e:
-        sys.stdout = sys.__stdout__
-        output_text.insert(tk.END, f"Błąd semantyczny:\n{e}")
+        output_text.insert(tk.END, f"Błąd Semantyczny:\n{e}")
         output_text.config(fg="#f85149")
         status_var.set("✗ Semantic Error")
         status_label.config(fg="#f85149")
         return None
 
     except Exception as e:
-        sys.stdout = sys.__stdout__
-        output_text.insert(tk.END, f"Błąd:\n{e}")
+        output_text.insert(tk.END, f"Nieoczekiwany Błąd:\n{e}")
         output_text.config(fg="#f85149")
         status_var.set("✗ Błąd")
         status_label.config(fg="#f85149")
         return None
 
     finally:
-        sys.stdout = sys.__stdout__
         output_text.config(state=tk.DISABLED)
 
 
@@ -223,7 +193,7 @@ input_text = tk.Text(
     font=FONT_CODE, relief=tk.FLAT,
     padx=12, pady=12,
     undo=True,
-    wrap=tk.NONE,
+    wrap=tk.WORD,
 )
 input_text.pack(fill=tk.BOTH, expand=True)
 
@@ -264,7 +234,7 @@ output_text = tk.Text(
     font=FONT_CODE, relief=tk.FLAT,
     padx=12, pady=12,
     state=tk.DISABLED,
-    wrap=tk.NONE,
+    wrap=tk.WORD,
 )
 output_text.pack(fill=tk.BOTH, expand=True)
 
@@ -294,7 +264,7 @@ console_text = tk.Text(
     font=FONT_CODE, relief=tk.FLAT,
     padx=12, pady=12,
     state=tk.DISABLED,
-    wrap=tk.NONE,
+    wrap=tk.WORD,
 )
 console_text.pack(fill=tk.BOTH, expand=True)
 
@@ -357,7 +327,6 @@ status_label = tk.Label(
 )
 status_label.pack(side=tk.RIGHT, padx=16)
 
-# Skrót klawiszowy
-root.bind("<Control-Return>", lambda e: run_code())
+
 
 root.mainloop()

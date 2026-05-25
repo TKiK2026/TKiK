@@ -1,5 +1,5 @@
 import ply.lex as lex
-
+from .errors import LexerError
 tokens = (
     "ID", "STRING", "NUMBER",
     "PLUS", "MINUS", "TIMES", "OVER",
@@ -78,7 +78,6 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}'")
-    t.lexer.skip(1)
+    raise LexerError(f"Nielegalny znak '{t.value[0]}' w linii {t.lexer.lineno}")
 
 lexer = lex.lex()
