@@ -50,12 +50,7 @@ def infer_type(node, var_types):
 
 
 def compute_value(node, var_values):
-    """Wylicza wartość wyrażenia w czasie kompilacji, jeśli jest deterministyczna.
 
-    Zwraca int, str (bez cudzysłowów) albo None, gdy wartość nie jest znana
-    statycznie. Używane między innymi do wykrywania dzielenia przez zero,
-    nawet gdy mianownikiem jest zmienna o znanej wartości 0.
-    """
     if isinstance(node, int):
         return node
     if isinstance(node, str):
@@ -161,12 +156,8 @@ def translate_to_python(node, indent=0, parent_prec=0, in_loop=False,
 
     op = node[0]
 
-    # --- INSTRUKCJE (każda niesie własny numer linii w ostatnim polu) ---
     if op == "assign":
-        # ("assign", name, expr, lineno)
         stmt_line = node[3]
-        # Najpierw tłumaczymy prawą stronę, by błędy semantyczne w wyrażeniu
-        # zostały podniesione zanim zaktualizujemy typ/wartość zmiennej.
         val = translate_to_python(node[2], 0, 0, in_loop, var_types, var_values, stmt_line)
         new_type = infer_type(node[2], var_types)
         new_value = compute_value(node[2], var_values)
@@ -199,7 +190,6 @@ def translate_to_python(node, indent=0, parent_prec=0, in_loop=False,
         enforce_logical_condition(node[1], "pętli 'as long as'", var_types, stmt_line)
         cond = translate_to_python(node[1], 0, 0, in_loop, var_types, var_values, stmt_line)
         body = translate_to_python(node[2], indent + 1, 0, True, var_types, var_values, stmt_line)
-        # Po pętli wartości zmiennych modyfikowanych w ciele są nieznane statycznie.
         for v in collect_assigned_vars(node[2]):
             var_values.pop(v, None)
         return f"{ind}while {cond}:\n{body}"
