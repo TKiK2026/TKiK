@@ -4,7 +4,7 @@ from tkinter import ttk, messagebox
 import io
 import sys
 from utils.errors import LexerError, ParserError, SemanticError
-from utils.parser import parser
+from utils.parser import parse_code
 from utils.transpiler import translate_to_python
 
 
@@ -18,8 +18,8 @@ def translate():
     output_text.delete("1.0", tk.END)
 
     try:
-        # Generowanie AST - bez kombinowania z sys.stdout!
-        ast = parser.parse(code)
+        # Generowanie AST — parse_code resetuje numerację linii lexera.
+        ast = parse_code(code)
 
         if ast is None:
             raise ParserError("Pusty program lub nierozpoznana składnia.")

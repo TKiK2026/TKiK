@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-from .lexer import tokens
+from .lexer import tokens, lexer
 from .errors import ParserError
 precedence = (
     ("left",    "QUESTION"),
@@ -27,35 +27,40 @@ def p_statement(p):
                  | if_statement
                  | loop_statement
                  | BREAK"""
-    p[0] = ("break",) if p.slice[1].type == "BREAK" else p[1]
+    if p.slice[1].type == "BREAK":
+        p[0] = ("break", p.lineno(1))
+    else:
+        p[0] = p[1]
 
 def p_assignment(p):
     """assignment : ID ASSIGN_OP_SIGN expression
                   | ID ASSIGN_OP_WORD expression
                   | MAKE ID expression"""
+    line = p.lineno(1)
     if p.slice[1].type == "MAKE":
-        p[0] = ("assign", p[2], p[3])
+        p[0] = ("assign", p[2], p[3], line)
     else:
-        p[0] = ("assign", p[1], p[3])
+        p[0] = ("assign", p[1], p[3], line)
 
 def p_print_statement(p):
     """print_statement : PRINT expression"""
-    p[0] = ("print", p[2])
+    p[0] = ("print", p[2], p.lineno(1))
 
 def p_if_statement(p):
     """if_statement : IF expression LBRACE body RBRACE
                     | IF expression LBRACE body RBRACE ELSE LBRACE body RBRACE
                     | IF expression LBRACE body RBRACE ELSE if_statement"""
+    line = p.lineno(1)
     if len(p) == 6:
-        p[0] = ("if", p[2], p[4])
+        p[0] = ("if", p[2], p[4], line)
     elif len(p) == 10:
-        p[0] = ("if_else", p[2], p[4], p[8])
+        p[0] = ("if_else", p[2], p[4], p[8], line)
     else:
-        p[0] = ("if_else_if", p[2], p[4], [p[7]])
+        p[0] = ("if_else_if", p[2], p[4], [p[7]], line)
 
 def p_loop_statement(p):
     """loop_statement : AS_LONG_AS expression LBRACE body RBRACE"""
-    p[0] = ("while", p[2], p[4])
+    p[0] = ("while", p[2], p[4], p.lineno(1))
 
 def p_expression_binop(p):
     """expression : expression PLUS expression
@@ -97,8 +102,24 @@ def p_expression_value(p):
 
 def p_error(p):
     if p:
-        raise ParserError(f"Błąd składniowy w pobliżu '{p.value}' (linia {p.lineno})")
+        raise ParserError(f"Linia {p.lineno}: błąd składniowy w pobliżu '{p.value}'.")
     else:
-        raise ParserError("Błąd składniowy: niespodziewany koniec kodu (EOF)")
+        last_line = lexer.lineno
+        raise ParserError(
+            f"Linia {last_line}: błąd składniowy — niespodziewany koniec kodu (EOF)."
+        )
 
 parser = yacc.yacc()
+
+
+def parse_code(code):
+    """Parsuje kod TrumpScript, resetując numerację linii lexera do 1.
+
+    Lexer PLY jest singletonem modułowym i jego `lineno` nie zeruje się
+    samoczynnie między kolejnymi wywołaniami `parser.parse`, przez co
+    numery linii w komunikatach o błędach kumulowałyby się przy każdej
+    translacji. Ta funkcja gwarantuje, że każde tłumaczenie startuje
+    z linią 1.
+    """
+    lexer.lineno = 1
+    return parser.parse(code, lexer=lexer)

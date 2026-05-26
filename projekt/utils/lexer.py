@@ -78,6 +78,6 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 def t_error(t):
-    raise LexerError(f"Nielegalny znak '{t.value[0]}' w linii {t.lexer.lineno}")
+    raise LexerError(f"Linia {t.lexer.lineno}: nielegalny znak '{t.value[0]}'.")
 
 lexer = lex.lex()
