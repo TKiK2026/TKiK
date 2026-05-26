@@ -1,4 +1,5 @@
-from .errors import SemanticError
+from errors import SemanticError
+
 
 PRECEDENCE = {
     "OR": 1, "AND": 2, "NOT": 3, "COMPARE": 4,
@@ -11,6 +12,7 @@ OP_MAP_COMPARE = {
 }
 
 OP_MAP_MATH = {"PLUS": "+", "MINUS": "-", "TIMES": "*", "OVER": "//"}
+
 OP_MAP_LOGIC = {"AND": "and", "OR": "or"}
 
 

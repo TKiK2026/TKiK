@@ -1,6 +1,4 @@
 import tkinter as tk
-import tkinter.font
-from tkinter import ttk, messagebox
 import io
 import sys
 from utils.errors import LexerError, ParserError, SemanticError
@@ -29,7 +27,7 @@ def translate():
         if python_code:
             output_text.insert(tk.END, python_code)
             output_text.config(fg="#79c0ff")
-            status_var.set("✓ Sukces")
+            status_var.set("Sukces")
             status_label.config(fg="#3fb950")
             return python_code
         else:
@@ -138,7 +136,7 @@ def copy_output():
 root = tk.Tk()
 root.title("TrumpScript Translator & Runner")
 root.geometry("1200x650")
-root.state("zoomed")
+root.state("normal")
 root.minsize(900, 500)
 root.configure(bg="#0d1117")
 

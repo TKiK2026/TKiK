@@ -1,6 +1,8 @@
 import ply.yacc as yacc
-from .lexer import tokens, lexer
-from .errors import ParserError
+from errors import ParserError
+from lexer import lexer
+
+
 precedence = (
     ("left",    "QUESTION"),
     ("left",    "OR"),
@@ -108,6 +110,7 @@ def p_error(p):
         raise ParserError(
             f"Linia {last_line}: błąd składniowy — niespodziewany koniec kodu (EOF)."
         )
+
 
 parser = yacc.yacc()
 

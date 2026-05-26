@@ -1,5 +1,7 @@
 import ply.lex as lex
-from .errors import LexerError
+from errors import LexerError
+
+
 tokens = (
     "ID", "STRING", "NUMBER",
     "PLUS", "MINUS", "TIMES", "OVER",
@@ -13,7 +15,6 @@ tokens = (
     "AND", "OR",
     "QUESTION", "AS_LONG_AS", "BREAK", "NOT",
 )
-
 t_LPAREN       = r","
 t_RPAREN       = r";"
 t_LBRACE       = r":"
