@@ -1,6 +1,6 @@
 import ply.yacc as yacc
-from errors import ParserError
-from lexer import lexer
+from .errors import ParserError
+from .lexer import lexer, tokens
 
 
 precedence = (
@@ -116,13 +116,5 @@ parser = yacc.yacc()
 
 
 def parse_code(code):
-    """Parsuje kod TrumpScript, resetując numerację linii lexera do 1.
-
-    Lexer PLY jest singletonem modułowym i jego `lineno` nie zeruje się
-    samoczynnie między kolejnymi wywołaniami `parser.parse`, przez co
-    numery linii w komunikatach o błędach kumulowałyby się przy każdej
-    translacji. Ta funkcja gwarantuje, że każde tłumaczenie startuje
-    z linią 1.
-    """
     lexer.lineno = 1
     return parser.parse(code, lexer=lexer)

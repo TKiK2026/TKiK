@@ -4,6 +4,7 @@ import sys
 from utils.errors import LexerError, ParserError, SemanticError
 from utils.parser import parse_code
 from utils.transpiler import translate_to_python
+from tkinter import font
 
 
 def translate():

@@ -1,5 +1,5 @@
 import ply.lex as lex
-from errors import LexerError
+from .errors import LexerError
 
 
 tokens = (

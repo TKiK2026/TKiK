@@ -1,4 +1,4 @@
-from errors import SemanticError
+from .errors import SemanticError
 
 
 PRECEDENCE = {

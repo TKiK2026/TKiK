@@ -1,0 +1,7 @@
+if 10:
+    say "I love TKiK"
+!
+as long as "string":
+    say "I love TKiK"
+!
+America is great.

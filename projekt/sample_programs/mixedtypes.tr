@@ -1,0 +1,7 @@
+make a fact
+make b 10
+make c "string"
+tell a + b
+say b - c
+say a / c
+America is great.

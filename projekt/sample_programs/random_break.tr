@@ -1,0 +1,6 @@
+make i 0
+as long as i<10:
+    say i
+!
+stop
+America is great.
