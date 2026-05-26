@@ -80,7 +80,7 @@ Po uruchomieniu aplikacji pojawi się okno podzielone na **3 sekcje**:
 
 3. **Wynik działania programu**  
    Konsola prezentująca rezultat wykonania programu.
-
+![img_1.png](img_1.png)
 ---
 
 #### Dostępne przyciski
